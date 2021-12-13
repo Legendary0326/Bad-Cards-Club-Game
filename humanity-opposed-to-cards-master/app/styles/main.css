@@ -1,0 +1,38 @@
+*,.form-control{color:white !important}
+body,.modal-content,input{background-color:black !important}
+
+.btn-primary {
+	background-color: rgba(255,255,255,0.95) !important;
+	background-image: none;
+	color: black !important;
+	border: 1px solid rgba(0,0,0,0.5);
+}
+
+.score{text-align:right}
+.modal-content{border:1px solid white}
+
+.card{
+	background-color:white;
+	color:black;
+	border-radius:5px;
+	height: 250px;
+	border: 1px solid black;
+}
+
+.card p {
+	font-size: 25px;
+	font-family: Helvetica neue;
+	margin-top: 10px;
+}
+
+.cpy {
+	margin-top: 10px;
+	text-align: center;
+	color: rgba(255,255,255,0.5) !important;
+}
+
+.card p{color:black !important}
+.answer{
+	border:1px solid white;
+	background-color: #000 !important;
+}

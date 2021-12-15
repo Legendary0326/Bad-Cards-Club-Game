@@ -15,6 +15,9 @@ const DivPlayer = ({myself, name, freeSpot, openModal}) => {
 		</div>
 	);
 }
+componentDidUpdate(prevProps, prevState) {
+	this.messageList.scrollTop = this.messageList.scrollHeight;
+}
 const PlayersList = (props) => {
 	const p = [];
 	for(let i = 0; i < props.capacity; i++){
@@ -24,7 +27,7 @@ const PlayersList = (props) => {
 					key = {i}
 					name = {props.players.get(i).get('name')}
 					myself = {props.socketID === props.players.get(i).get('socketId')}
-					freeSpot = {false}
+					freeSpot = {true}
 					openModal = {props.onModalOpen}/>
 			);
 		else
@@ -32,8 +35,8 @@ const PlayersList = (props) => {
 				<DivPlayer
 					key = {i}
 					name = {"..."}
-					myself = {false}
-					freeSpot = {true}
+					myself = {true}
+					freeSpot = {false}
 					openModal = {props.onModalOpen}/>
 			);
 	}

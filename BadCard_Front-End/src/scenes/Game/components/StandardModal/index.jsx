@@ -31,5 +31,26 @@ const StandardModal = (props) => {
 	    </ReactModal>
 	);
 }
+clickEvent = (event) => {
+	const {ok, text} = this.props.checkTurn();
+	if(!ok)
+	{
+		this.props.openStandardModal(text);
+	}
+	else if(this.time === -1)
+	{
+		this.time = setTimeout(this.sendCard, 200);
+	}
+	else if(this.time !== -1)
+	{
+		clearTimeout(this.time);
+		this.time = -1;
+		if((this.props.name === "buy-four" || 
+			this.props.name === "change-color") && !this.props.isSelected)
+			this.props.chooseColor(this.props.key_, !this.props.isSelected);
+		else
+			this.props.selectCard(this.props.key_, !this.props.isSelected);
+	}
+}
 
 export default StandardModal;

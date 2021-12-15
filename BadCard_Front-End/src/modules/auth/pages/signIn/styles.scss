@@ -1,0 +1,43 @@
+.wallet-info {
+
+}
+.error-msg {
+    color: red;
+    margin-top: 0px !important;
+}
+.metamask-content {
+    .wallet-address {
+        height: 40px;
+        background-color:#2c2f36 ;
+        border-radius: 1rem;
+    }
+    .wallet-account {
+        background-color:#212429 ;
+        border-radius: 1rem;
+        padding: 0.3rem 0.5rem;
+    }
+    span{
+        user-select: none;
+        cursor: pointer;
+        color: white;
+    }
+    span:hover {
+        color: #61ffe0;
+         user-select: none;
+        cursor: pointer;
+    }
+    .wallet-address {
+        background-color:#2c2f36
+    }
+    .c-white {
+        color: white;
+    }
+}
+.metamask-content:hover {
+     cursor: pointer;
+        margin: auto 0 !important;
+        border-radius: 5px;
+        transition: all 0.2s ease 0s;
+        box-shadow: #919599 0px 0px 8px 0px;
+        background-color: rgba(245, 245, 245,1);
+}

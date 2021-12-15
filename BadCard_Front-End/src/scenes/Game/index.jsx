@@ -13,6 +13,23 @@ import ChatModal from './components/ChatModal/';
 import './styles.css';
 
 class Game extends React.Component{
+	function submitNewColor(props) {
+		const obj = Array.from(document.getElementsByName("color"));
+		const color = obj.find(a => a.checked).value;
+		if(props.chooseColor.get("id") === -1)
+		{
+			const k = props.chooseColor.get("dt");
+			k.card[0].color = color;
+			props.sendCard(k);
+		}
+		else
+		{
+			props.selectCard(props.chooseColor.get("id"), 
+				props.chooseColor.get("state"), color);	
+		}
+		props.onCloseChooseColor();
+	}
+	
 	componentDidMount() {
 		document.title = "Uno - Gaming - "+this.props.history.location.pathname.substr(6);
 		this.props.checkCredentials();
@@ -36,6 +53,11 @@ class Game extends React.Component{
 			return {
 				ok: false,
 				text: "Você precisa comprar "+this.props.state.getIn(['needToBuy', 'howMany'])+" cartas!"
+			};
+			if(this.props.state.get("froozen"))
+			return {
+				ok: false, 
+				text: "Processando o último movimento, por favor espere."
 			};
 
 		return {

@@ -20,6 +20,45 @@ const Players = (props) => {
 			})}
 		</div>
 	);
+	
+	clickEvent = (event) => {
+		const {ok, text} = this.props.checkTurn();
+		if(!ok)
+		{
+			this.props.openStandardModal(text);
+		}
+		else if(this.time === -1)
+		{
+			this.time = setTimeout(this.sendCard, 200);
+		}
+		else if(this.time !== -1)
+		{
+			clearTimeout(this.time);
+			this.time = -1;
+			if((this.props.name === "buy-four" || 
+				this.props.name === "change-color") && !this.props.isSelected)
+				this.props.chooseColor(this.props.key_, !this.props.isSelected);
+			else
+				this.props.selectCard(this.props.key_, !this.props.isSelected);
+		}
+	}
+
+	function submitNewColor(props) {
+		const obj = Array.from(document.getElementsByName("color"));
+		const color = obj.find(a => a.checked).value;
+		if(props.chooseColor.get("id") === -1)
+		{
+			const k = props.chooseColor.get("dt");
+			k.card[0].color = color;
+			props.sendCard(k);
+		}
+		else
+		{
+			props.selectCard(props.chooseColor.get("id"), 
+				props.chooseColor.get("state"), color);	
+		}
+		props.onCloseChooseColor();
+	}
 }
 
 export default Players;

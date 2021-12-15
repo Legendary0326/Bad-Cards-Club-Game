@@ -27,5 +27,21 @@ const UsedCards = (props) => {
 		</div>
 	);
 }
-
+createObj(){
+	const rotate = ((c) => c % 2 === 0 ? c : -c)(Math.floor(Math.random()*6));
+	const obj = {
+		card: [{
+			id: this.props.key_,
+			name: this.props.name,
+			from: this.props.currentPlayerIndex,
+			rotate
+		}],
+		ctx: {
+			currentPlayerIndex: this.props.currentPlayerIndex,
+			capacity: this.props.capacity,
+			direction: this.props.direction
+		}
+	}
+	return obj;
+}
 export default UsedCards;

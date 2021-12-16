@@ -1,0 +1,106 @@
+.playgame{
+    flex : 4;
+    background-color : #000000;
+}
+
+.playgame-menu{
+    flex : 4;
+}
+
+.playgame-data{
+    display : flex;
+}
+
+.first{
+    display: flex;
+}
+.player-x{
+    display: flex;
+    gap: 10px;
+    margin-left: 20px;
+    margin-top : 10px;
+}
+.player1 button{
+    border: none;
+    background-color : #ffffff;
+    color : #000000;
+    padding : 10px;
+    border-radius: 5px;
+    text-transform : capitalize;
+}
+.player8 button{
+    border: none;
+    background-color : #1a1a1a;
+    color : #ffffff;
+    padding : 10px;
+    border-radius: 5px;
+    text-transform : capitalize;
+}
+.game-name h2{
+    color: white;
+    margin-left: 20px;
+}
+.player-y{
+    margin-top: 20px;
+    margin-left: 500px;
+    border: none;
+    background-color : #1a1a1a;
+    color : #ffffff;
+    padding : 10px;
+    border-radius: 5px;
+    text-transform : capitalize;
+    width : 150px;
+}
+.player-y h3{
+    color: white;
+}
+.player-y p{
+    color: white;
+}
+.second{
+    display : flex;
+    flex-direction : column;
+    gap : 10px;
+    margin-top : 20px;
+}
+.second h1{
+    color: white;
+    margin-left: 20px;
+}
+.second h3{
+    color:white;
+    margin-left: 20px;
+}
+.cards h1{
+    color: white;
+    margin-left:20px;
+}
+.third{
+    margin-top: 100px;
+}
+.third-data{
+    display: flex;
+    flex-wrap : wrap;
+    justify-content : space-between;
+    align-items : center;
+    gap:10px;
+    margin : 20px;
+    padding-bottom : 5px;
+}
+.third-data1{
+    height: 200px;
+    width: 200px;
+    background-color: white;
+    border-radius : 10px;
+}
+.third-data1 p{
+    display : flex;
+    justify-content : center;
+    align-items : center;
+    height : 100%;
+    padding : 5px 10px 5px 10px;
+    text-align : center;
+    text-transform : capitalize;
+    font-size : 20px;
+    font-weight : bold;
+}

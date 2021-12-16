@@ -1,0 +1,200 @@
+.sidebar-menu{
+    display : flex;
+    flex-direction : column;
+    padding : 10px 0 10px 0;
+    width : 100%;
+    gap : 10px;
+}
+
+.sidebar-logo-area{
+    display : flex;
+    flex-direction : column;
+    justify-content : center;
+    align-items : center;
+    gap : 5px;
+}
+
+.sidebar-logo img{
+    height : 100px;
+    width : 100px;
+    object-fit : contain;
+}
+
+.sidebar-logo-area .sidebar-logo-btn button{
+    border : none;
+    background-color : #000000;
+    color : #ffffff;
+    padding : 10px 15px 10px 15px;
+    line-height: 15px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    text-transform: capitalize;
+    border-radius : 20px;
+}
+
+.sidebar-menu-items{
+    display : flex;
+    flex-direction : column;
+    gap : 5px;
+    padding-left : 20px;
+    margin-top : 40px;
+}
+
+.sidebar-menu-items .sidebar-menu-item{
+    display : flex;
+    gap : 10px;
+    align-items : center;
+    color : #808080;
+    margin : 10px;
+    cursor : pointer;
+}
+
+a{
+    text-decoration : none;
+    text-transform : uppercase;
+    color : #808080;
+    cursor : pointer;
+}
+
+.sidebar-menu-item:hover{
+    color : #5da7f5;
+}
+
+a:hover{
+    color : #5da7f5;
+    border-bottom : 1px solid #5da7f5;
+}
+
+.sidebar-menu-item-btn{
+    border : none;
+    background-color : #5da7f5;
+    color : #ffffff;
+    padding : 10px 15px 10px 15px;
+    line-height: 15px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    text-transform: capitalize;
+    margin-top : 20px;
+    border-radius : 2px;
+}
+
+.sidebar-menu-disconnect-area{
+    display : flex;
+    align-items : center;
+    gap : 10px;
+    position : absolute;
+    bottom : 40px;
+    padding-left : 20px;
+}
+
+.modal-data{
+    width : 400px;
+    height : 250px;
+    display : flex;
+    flex-direction : column;
+    justify-content : center;
+    align-items : center;
+    border-radius : 5px;
+}
+
+.modal-text span{
+    font-size : 20px;
+    font-weight : bold;
+    margin-top : 20px;
+}
+
+.modal-data form{
+    display : flex;
+    flex-direction : column;
+    margin-top : 20px;
+}
+
+.modal-data form>div{
+    display : flex;
+    gap : 15px;
+    margin : 5px;
+}
+
+.modal-data form label{
+    font-size : 20px;
+    font-weight : bold;
+}
+
+.modal-data form input{
+    border: 0px; 
+    border-bottom:1px dotted #000;
+}
+
+.modal-data-btn{
+    display : flex;
+    justify-content : center;
+    align-items : center;
+}
+
+.submit-btn{
+    border : none;
+    background-color : #000000;
+    color : #ffffff;
+    padding : 10px;
+    width : 100px;
+    margin-top : 40px;
+    display : flex;
+    justify-content : center;
+    align-items : center;
+    cursor : pointer;
+    border-radius : 5px;
+}
+
+.modal-game-data{
+    width : 400px;
+    height : 250px;
+    display : flex;
+    flex-direction : column;
+    border-radius : 5px;
+}
+
+.game-name-data{
+    margin-top : 10px;
+    display : flex;
+    gap : 10px;
+    align-items : center;
+}
+
+.game-name-data label{
+    font-size : 20px;
+    font-weight : bold;
+}
+
+.game-name-data input{
+    border : none;
+    background-color : #808080;
+    padding : 5px;
+    width : 200px;
+    color : #ffffff;
+}
+
+.game-name-data ::placeholder {
+    color:#ffffff;
+    opacity: 1;
+}
+
+form p{
+    font-size : 15px;
+    font-weight : bold;
+    margin-top : 20px;
+}
+
+.game-data-pack{
+    display : flex;
+    align-items : center;
+    gap : 10px;
+    margin-top : 10px;
+}
+
+.modal-data-game-btn{
+    display : flex;
+    justify-content : center;
+    margin-top : 50px;
+}

@@ -41,7 +41,7 @@ const ModalData = () => {
         contentLabel="Example Modal"
       >
         <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Hello</h2>
-        <button onClick={closeModal}>close</button>
+        <button className="modal-close" onClick={closeModal}>X</button>
         <div>I am a modal</div>
         <form>
           <input />

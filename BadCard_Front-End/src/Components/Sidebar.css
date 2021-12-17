@@ -22,7 +22,7 @@
 
 .sidebar-logo-area .sidebar-logo-btn button{
     border : none;
-    background-color : #000000;
+    background-color : #191919;
     color : #ffffff;
     padding : 10px 15px 10px 15px;
     line-height: 15px;
@@ -31,6 +31,10 @@
     text-align: center;
     text-transform: capitalize;
     border-radius : 20px;
+}
+
+.sidebar-logo-area .sidebar-logo-btn button:hover{
+    background-color : #000000;
 }
 
 .sidebar-menu-items{
@@ -149,7 +153,6 @@ a:hover{
 
 .modal-game-data{
     width : 400px;
-    height : 250px;
     display : flex;
     flex-direction : column;
     border-radius : 5px;

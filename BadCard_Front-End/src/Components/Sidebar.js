@@ -59,9 +59,9 @@ const Sidebar = () => {
             </div>
             <div className="sidebar-menu-items">
                 <div className="sidebar-menu-item">
-                    <Link to="/" style={{display : "flex", gap : "10px"}}>
+                    <Link to="/home" style={{display : "flex", gap : "10px"}}>
                         <span><i class="fa fa-home"></i></span>
-                        <a href="#">Home</a>
+                        <a href="">Home</a>
                     </Link>
                 </div>
                 <div className="sidebar-menu-item">
@@ -84,7 +84,7 @@ const Sidebar = () => {
         style={customStyles}
         contentLabel="Example Modal"
       >
-        <button onClick={closeModal}>close</button>
+        <button className="modal-close" onClick={closeModal}>X</button>
         <div className="modal-data">
             <div className="modal-text">
                 <span>Settings:</span>
@@ -112,13 +112,13 @@ const Sidebar = () => {
                 <div className="sidebar-menu-item">
                     <button onClick={newGame} className="sidebar-menu-item-btn"><span><i class="fa fa-plus"></i></span>&nbsp; &nbsp;Create New Game</button>
                     <Modal
-        isOpen={modalDataOpen}
-        onAfterOpen={afterOpenDataModal}
-        onRequestClose={closeDataModal}
-        style={customStyles}
-        contentLabel="Example Modal"
-      >
-        <button onClick={closeDataModal}>close</button>
+                      isOpen={modalDataOpen}
+                      onAfterOpen={afterOpenDataModal}
+                      onRequestClose={closeDataModal}
+                      style={customStyles}
+                      contentLabel="Example Modal"
+                    >
+        <button className="modal-close" onClick={closeDataModal}>X</button>
         <div className="modal-game-data">
             <div className="modal-text">
                 <span>Create New Game:</span>
@@ -145,7 +145,7 @@ const Sidebar = () => {
             </div>
             <div className="sidebar-menu-disconnect-area">
                 <span><i class="fa fa-power-off"></i></span>
-                <a href="#">Disconnect</a>
+                <a href="/">Disconnect</a>
             </div>
         </div>
     )

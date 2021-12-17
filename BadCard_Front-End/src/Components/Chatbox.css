@@ -1,4 +1,8 @@
 .chatbox{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 100%;
     margin-top : 10px;
     background-color : #ffffff;
     height : 120px;

@@ -1,6 +1,6 @@
 .main-data{
     padding : 10px;
-    height : 570px;
+    height: calc(100vh - 125px);
     overflow-y : scroll;
     gap : 5px;
     display : flex;
@@ -21,6 +21,7 @@
 .main-heading span{
     font-size : 30px;
     font-weight : bold;
+    color: white;
 }
 
 .main-cards{
@@ -31,6 +32,10 @@
 }
 
 .main-cards .main-card-item{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0.6rem;
     height : 250px;
     width : 250px;
     background-color : #ffffff;
@@ -54,7 +59,6 @@
     display : flex;
     justify-content : space-between;
     color : #000000;
-    padding : 80px 15px;
 }
 
 .main-card-bottom button{
@@ -76,8 +80,8 @@
 }
 
 .logo{
-    height : 30px;
-    width : 30px;
+    /* height : 30px; */
+    /* width : 30px; */
     display : flex;
     align-items : center;
 }

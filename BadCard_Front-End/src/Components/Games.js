@@ -1,21 +1,21 @@
 import React from 'react';
-import "./Home.css";
+import "./Games.css";
 import Sidebar from "./Sidebar";
-import Main from "./Main";
 import Chatbox from './Chatbox';
+import PlayGame from "./PlayGame";
 
-const Home = () => {
+const Games = () => {
     return (
-        <div className="home">
+        <div className="playgame-data">
             {/* <div className="sidebar">
                 <Sidebar />
             </div> */}
             <div className="main">
-                <Main />
+                <PlayGame />
                 <Chatbox />
             </div>
         </div>
     )
 }
 
-export default Home
+export default Games

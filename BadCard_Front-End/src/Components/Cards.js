@@ -1,7 +1,12 @@
 import React from "react";
-import Logo from "../assets/logo.png";
+import Logo from "../assets/Group.png";
 
 const Cards = () => {
+  
+  function handleJoin() {
+    window.location = "/playgame";
+  }
+
   return (
       <div className="main-cards">
         <div className="main-card-item">
@@ -11,7 +16,7 @@ const Cards = () => {
             <span>Private? NO</span>
           </div>
           <div className="main-card-bottom">
-            <button>Join</button>
+            <button onClick={ handleJoin }>Join</button>
             <span>
                 <img src={Logo} className="logo" alt="smiley" />
             </span>

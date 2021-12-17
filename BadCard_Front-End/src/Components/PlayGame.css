@@ -1,5 +1,11 @@
 .playgame{
-    flex : 4;
+    padding : 10px;
+    height: calc(100vh - 125px);
+    overflow-y : scroll;
+    gap : 5px;
+    display : flex;
+    flex-direction :column;
+    justify-content : space-between;
     background-color : #000000;
 }
 

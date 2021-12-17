@@ -1,0 +1,37 @@
+.SignIn {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.SignIn-logo-area {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.SignIn-logo {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20%;
+}
+
+.SignIn-logo-btn button{
+    margin: 0 auto;
+    border : none;
+    background-color : #191919;
+    color : #ffffff;
+    padding : 10px 15px 10px 15px;
+    line-height: 15px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    text-transform: capitalize;
+    border-radius : 20px;
+}
+
+.SignIn-logo-btn button:hover{
+    background-color : #000000;
+}

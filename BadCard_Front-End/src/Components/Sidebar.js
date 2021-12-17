@@ -3,6 +3,8 @@ import "./Sidebar.css";
 import Modal from "react-modal";
 import Logo from "../assets/logo.png";
 import {Link} from "react-router-dom";
+import { useEthers } from "@usedapp/core";
+import discord_img from '../assets/discord.png';
 
 const customStyles = {
     content: {
@@ -20,6 +22,7 @@ const Sidebar = () => {
     let subtitle;
     const [modalIsOpen, setIsOpen] = useState(false);
     const [modalDataOpen, setModelDataOpen] = useState(false);
+    const { account, deactivate } = useEthers();
   
     function openModal() {
       setIsOpen(true);
@@ -47,6 +50,11 @@ const Sidebar = () => {
         setModelDataOpen(false);
       }
 
+    function handleDisconnect() {
+        deactivate();
+        window.location = "/";
+    }
+
     return (
         <div className="sidebar-menu">
             <div className="sidebar-logo-area">
@@ -54,7 +62,7 @@ const Sidebar = () => {
                     <img src={Logo} alt="logo" />
                 </div>
                 <div className="sidebar-logo-btn">
-                    <button>Connect Wallet</button>
+                    <button>{ String(account).substring(0, 6) + "..." + String(account).substring(38)}</button>
                 </div>
             </div>
             <div className="sidebar-menu-items">
@@ -71,7 +79,8 @@ const Sidebar = () => {
                     </Link>
                 </div>
                 <div className="sidebar-menu-item">
-                        <span><i class="fa fa-envelope"></i></span>
+                        {/* <span><i class="fa fa-discord"></i></span> */}
+                        <img src={discord_img}></img>
                         <a href="#">Discord</a>
                 </div>
                 <div className="sidebar-menu-item">
@@ -145,7 +154,7 @@ const Sidebar = () => {
             </div>
             <div className="sidebar-menu-disconnect-area">
                 <span><i class="fa fa-power-off"></i></span>
-                <a href="/">Disconnect</a>
+                <a onClick={handleDisconnect}>Disconnect</a>
             </div>
         </div>
     )

@@ -65,6 +65,10 @@ a{
     color : #5da7f5;
 }
 
+.sidebar-menu-item > img {
+    /* margin-left: -3%; */
+}
+
 a:hover{
     color : #5da7f5;
     border-bottom : 1px solid #5da7f5;
@@ -72,16 +76,20 @@ a:hover{
 
 .sidebar-menu-item-btn{
     border : none;
-    background-color : #5da7f5;
+    background-color : #3391f5;
     color : #ffffff;
     padding : 10px 15px 10px 15px;
     line-height: 15px;
     display: flex;
-    align-items: center;
+    /* align-items: center; */
     text-align: center;
     text-transform: capitalize;
     margin-top : 20px;
     border-radius : 2px;
+}
+
+.sidebar-menu-item-btn:hover {
+    background-color : #146ece;
 }
 
 .sidebar-menu-disconnect-area{

@@ -7,18 +7,35 @@ const Main = () => {
   return (
     <React.Fragment>
       <div className="main-data">
-        <div className="main-heading">
-          <span>Games:</span>
+        
+        <div className="row">
+          <div className="main-heading ml-2">
+            <span>Games:</span>
+          </div>
+          <div className="col-3">
+            <Cards />
+          </div>
+          <div className="col-3">
+            <Cards />
+          </div>
+          <div className="col-3">
+            <Cards />
+          </div>
+          <div className="col-3">
+            <Cards />
+          </div>
         </div>
-        <div className="cards">
-          <Cards />
-          <Cards />
-          <Cards />
-          <Cards />
-          <Cards />
-          <Cards />
-          <Cards />
-          <Cards />
+        <div className="row">
+          <div className="col-3">
+            <Cards />
+          </div>
+          <div className="col-3">
+            <Cards />
+          </div>
+          <div className="col-3">
+            <Cards />
+          </div>
+
         </div>
       </div>
     </React.Fragment>

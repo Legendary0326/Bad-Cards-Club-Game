@@ -119,7 +119,7 @@ const Sidebar = () => {
       </Modal>
                 </div>
                 <div className="sidebar-menu-item">
-                    <button onClick={newGame} className="sidebar-menu-item-btn"><span><i class="fa fa-plus"></i></span>&nbsp; &nbsp;Create New Game</button>
+                    <button onClick={newGame} className="sidebar-menu-item-btn"><span><i class="fa fa-plus"></i></span>&nbsp;Create New Game</button>
                     <Modal
                       isOpen={modalDataOpen}
                       onAfterOpen={afterOpenDataModal}

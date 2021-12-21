@@ -24,7 +24,7 @@ const PlayGame = () => {
                     <div>Is the bad buddy</div>
                 </div>
             </div>
-        </div>
+        </div>.imk
         <div className="second">
             <h1>Question:</h1>
             <h3>Sure, sex is great.But you have ever tried _ _ _ _ _?</h3>

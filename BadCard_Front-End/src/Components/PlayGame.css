@@ -14,13 +14,11 @@
 }
 
 .playgame-data{
-    display: flex;
+    display : flex;
 }
 
 .first{
     display: flex;
-    justify-content: space-between;
-    margin-right: 3rem;
 }
 .player-x{
     display: flex;
@@ -44,20 +42,20 @@
     border-radius: 5px;
     text-transform : capitalize;
 }
-.game-name span{
+.game-name h2{
     color: white;
-    font-size: 50px;
     margin-left: 20px;
 }
 .player-y{
-    background: url('../assets/smile.png') no-repeat;
-    background-size: 100% 100%;
     margin-top: 20px;
+    margin-left: 500px;
+    border: none;
+    background-color : #1a1a1a;
     color : #ffffff;
     padding : 10px;
     border-radius: 5px;
     text-transform : capitalize;
-    width : 10vw;
+    width : 150px;
 }
 .player-y h3{
     color: white;

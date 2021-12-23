@@ -11,6 +11,9 @@ import {
 import ModalData from "./Components/Modal";
 import SignIn from "./Components/SignIn";
 import Sidebar from "./Components/Sidebar";
+import io from 'socket.io-client';
+
+const socket = io.connect('/');
 
 function App() {
   return (
@@ -23,7 +26,7 @@ function App() {
         <Route path="/playgame">
         <div className="row main-body" >
           <div className="col-2">
-            <Sidebar />
+            <Sidebar socket={socket} />
           </div>
           <div className="col-10">
               <Games />
@@ -33,10 +36,10 @@ function App() {
         <Route path="/home">
           <div className="row main-body" >
             <div className="col-2">
-              <Sidebar />
+              <Sidebar socket={socket} />
             </div>
             <div className="col-10">
-                <Home />
+                <Home socket={socket} />
             </div>
           </div>
         </Route>

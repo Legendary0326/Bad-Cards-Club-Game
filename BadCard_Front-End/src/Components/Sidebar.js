@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import "./Sidebar.css";
 import Modal from "react-modal";
 import Logo from "../assets/logo.png";
@@ -17,20 +17,20 @@ const customStyles = {
     },
   };
 
-const Sidebar = () => {
+const Sidebar = ({socket}) => {
 
     let subtitle;
     const [modalIsOpen, setIsOpen] = useState(false);
     const [modalDataOpen, setModelDataOpen] = useState(false);
     const { account, deactivate } = useEthers();
-  
+    
     function openModal() {
       setIsOpen(true);
     }
   
     function afterOpenModal() {
       // references are now sync'd and can be accessed.
-      subtitle.style.color = '#f00';
+    //   subtitle.style.color = '#f00';
     }
   
     function closeModal() {
@@ -43,7 +43,7 @@ const Sidebar = () => {
 
     function afterOpenDataModal() {
         // references are now sync'd and can be accessed.
-        subtitle.style.color = '#f00';
+        // subtitle.style.color = '#f00';
       }
 
     function closeDataModal() {
@@ -53,6 +53,17 @@ const Sidebar = () => {
     function handleDisconnect() {
         deactivate();
         window.location = "/";
+    }
+
+    const createRoom = (e) => {
+        const username = 'Hello'
+        const roomname = '1'
+
+        socket.emit("createRoom", {
+            username : username,
+            roomname : roomname
+        })
+        closeDataModal()
     }
 
     return (
@@ -68,23 +79,23 @@ const Sidebar = () => {
             <div className="sidebar-menu-items">
                 <div className="sidebar-menu-item">
                     <Link to="/home" style={{display : "flex", gap : "10px"}}>
-                        <span><i class="fa fa-home"></i></span>
-                        <a href="">Home</a>
+                        <span><i className="fa fa-home"></i></span>
+                        <span>Home</span>
                     </Link>
                 </div>
                 <div className="sidebar-menu-item">
                     <Link to="/playgame" style={{display : "flex", gap : "10px"}}>
-                        <span><i class="fa fa-user"></i></span>
-                        <a href="#">Games</a>
+                        <span><i className="fa fa-user"></i></span>
+                        <span>Games</span>
                     </Link>
                 </div>
                 <div className="sidebar-menu-item">
-                        {/* <span><i class="fa fa-discord"></i></span> */}
+                        {/* <span><i className="fa fa-discord"></i></span> */}
                         <img src={discord_img}></img>
-                        <a href="#">Discord</a>
+                        <span>Discord</span>
                 </div>
                 <div className="sidebar-menu-item">
-                        <span><i class="fa fa-gear"></i></span>
+                        <span><i className="fa fa-gear"></i></span>
                         <a href="#" onClick={openModal}>Setting</a>
       <Modal
         isOpen={modalIsOpen}
@@ -119,7 +130,7 @@ const Sidebar = () => {
       </Modal>
                 </div>
                 <div className="sidebar-menu-item">
-                    <button onClick={newGame} className="sidebar-menu-item-btn"><span><i class="fa fa-plus"></i></span>&nbsp;Create New Game</button>
+                    <button onClick={newGame} className="sidebar-menu-item-btn"><span><i className="fa fa-plus"></i></span>&nbsp; &nbsp;Create New Game</button>
                     <Modal
                       isOpen={modalDataOpen}
                       onAfterOpen={afterOpenDataModal}
@@ -132,7 +143,7 @@ const Sidebar = () => {
             <div className="modal-text">
                 <span>Create New Game:</span>
             </div>
-            <form>
+            <form onSubmit={createRoom}>
                 <div className="game-name-data">
                 <label>Game Name:</label>
                 <input type="text" placeholder="Text Goes Here" />
@@ -140,12 +151,12 @@ const Sidebar = () => {
                 <p>Packs:</p>
                 <div className="game-data-pack">
                 <input type="radio" id="html" name="fav_language" value="Starter Pack" />
-                <label for="html">Starter Pack</label>
-                <input type="radio" id="css" name="fav_language" value="Expansion X" />
-                <label for="css">Expansion X</label>
+                <label htmlFor="html">Starter Pack</label>
+                <input type="radio" id="css" name="fav_language" value="Expansion X"  />
+                <label htmlFor="css">Expansion X</label>
                 </div>
                 <div className="modal-data-game-btn">
-                <button type="submit" className="submit-btn">enter</button>
+                <button type="button" onClick={createRoom} className="submit-btn">enter</button>
                 </div>
             </form>
         </div>
@@ -153,7 +164,7 @@ const Sidebar = () => {
                 </div>
             </div>
             <div className="sidebar-menu-disconnect-area">
-                <span><i class="fa fa-power-off"></i></span>
+                <span><i className="fa fa-power-off"></i></span>
                 <a onClick={handleDisconnect}>Disconnect</a>
             </div>
         </div>

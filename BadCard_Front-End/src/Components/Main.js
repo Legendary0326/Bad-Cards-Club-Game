@@ -1,41 +1,41 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./Main.css";
 import Cards from "./Cards";
 import Chatbox from "./Chatbox";
 
-const Main = () => {
+const Main = ({ socket }) => {
+
+  const [openRooms, setOpenRooms] = useState([])
+
+  useEffect(() => {
+    socket.on("rooms", (data) => {
+      console.log(data)
+      let i = 0 
+      const rooms = data.map((element) => {
+        i ++;
+        return <Cards key={i} />
+      })
+
+      setOpenRooms(rooms)
+    }, [socket, openRooms.length])
+  })
+
   return (
     <React.Fragment>
       <div className="main-data">
-        
-        <div className="row">
-          <div className="main-heading ml-2">
-            <span>Games:</span>
-          </div>
-          <div className="col-3">
-            <Cards />
-          </div>
-          <div className="col-3">
-            <Cards />
-          </div>
-          <div className="col-3">
-            <Cards />
-          </div>
-          <div className="col-3">
-            <Cards />
-          </div>
+        <div className="main-heading">
+          <span>Games:</span>
         </div>
-        <div className="row">
-          <div className="col-3">
-            <Cards />
-          </div>
-          <div className="col-3">
-            <Cards />
-          </div>
-          <div className="col-3">
-            <Cards />
-          </div>
-
+        <div className="cards">
+          {openRooms}
+          {/* <Cards />
+          <Cards />
+          <Cards />
+          <Cards />
+          <Cards />
+          <Cards />
+          <Cards />
+          <Cards /> */}
         </div>
       </div>
     </React.Fragment>

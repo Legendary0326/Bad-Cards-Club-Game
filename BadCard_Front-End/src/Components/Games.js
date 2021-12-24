@@ -4,15 +4,15 @@ import Sidebar from "./Sidebar";
 import Chatbox from './Chatbox';
 import PlayGame from "./PlayGame";
 
-const Games = () => {
+const Games = ({socket}) => {
     return (
         <div className="playgame-data">
             {/* <div className="sidebar">
                 <Sidebar />
             </div> */}
             <div className="main">
-                <PlayGame />
-                <Chatbox />
+                <PlayGame socket={socket}/>
+                <Chatbox socket={socket}/>
             </div>
         </div>
     )

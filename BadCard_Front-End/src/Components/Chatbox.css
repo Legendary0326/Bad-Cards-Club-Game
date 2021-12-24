@@ -24,6 +24,8 @@
     gap : 5px;
     border-top : 1px solid #808080;
     padding : 5px;
+    height: 5rem;
+    overflow-y: auto;
 }
 
 .chatbox-details{
@@ -31,6 +33,10 @@
     align-items : center;
     gap : 10px;
     margin-top : 10px;
+}
+
+.chatbox-details .person-image {
+    height: 100%;
 }
 
 .chatbox-details .person-image img{
@@ -45,3 +51,31 @@
     display : flex;
     align-items : center;
 }
+
+.chatbox-send {
+    border-top: 1px solid #999;
+    display: flex;
+    gap: .5rem;
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+}
+
+.chatbox-send .content {
+    margin: auto;
+    width: 100%;
+}
+
+.chatbox-send .content input {
+    padding: .5rem;
+    width: 100%;
+}
+
+.chatbox-send .send {
+    margin: auto;
+}
+
+.chatbox-send .send button {
+    padding: .5rem;
+    margin-top: 0;
+}
+

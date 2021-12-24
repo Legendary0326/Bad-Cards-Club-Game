@@ -19,11 +19,27 @@ const customStyles = {
 
 const Sidebar = ({socket}) => {
 
-    let subtitle;
     const [modalIsOpen, setIsOpen] = useState(false);
     const [modalDataOpen, setModelDataOpen] = useState(false);
     const { account, deactivate } = useEthers();
-    
+    const [username, setUsername] = useState("");
+    const [roomname, setRoomName] = useState("");
+    const [userInfo, setUserInfo] = useState({});
+
+    useEffect( () => {
+        if(account) {
+            socket.emit("userInfo", {wallet: account})
+            socket.on("userInfo", (data) => {
+                setUserInfo(data);
+                setUsername(data.username)
+            })
+        }
+    }, [socket, account])
+
+    useEffect( () => {
+
+    }, [username, roomname, userInfo])
+
     function openModal() {
       setIsOpen(true);
     }
@@ -48,19 +64,32 @@ const Sidebar = ({socket}) => {
 
     function closeDataModal() {
         setModelDataOpen(false);
-      }
+    }
 
     function handleDisconnect() {
         deactivate();
         window.location = "/";
     }
 
-    const createRoom = (e) => {
-        const username = 'Hello'
-        const roomname = '1'
+    const changeUsername = (e) => {
+        setUsername(e.target.value);
+    }
 
-        socket.emit("createRoom", {
+    const changeRoomname = (e) => {
+        setRoomName(e.target.value)
+    }
+
+    const handleSettings = (e) => {
+        socket.emit("addUser", {
             username : username,
+            wallet : account,
+        })
+        closeModal()
+    }
+
+    const handleCreateRoom = (e) => {
+        socket.emit("createRoom", {
+            wallet : account,
             roomname : roomname
         })
         closeDataModal()
@@ -84,7 +113,7 @@ const Sidebar = ({socket}) => {
                     </Link>
                 </div>
                 <div className="sidebar-menu-item">
-                    <Link to="/playgame" style={{display : "flex", gap : "10px"}}>
+                    <Link to={"/playgame/" + (userInfo.room ? userInfo.room : "")} style={{display : "flex", gap : "10px"}}>
                         <span><i className="fa fa-user"></i></span>
                         <span>Games</span>
                     </Link>
@@ -97,40 +126,48 @@ const Sidebar = ({socket}) => {
                 <div className="sidebar-menu-item">
                         <span><i className="fa fa-gear"></i></span>
                         <a href="#" onClick={openModal}>Setting</a>
-      <Modal
-        isOpen={modalIsOpen}
-        onAfterOpen={afterOpenModal}
-        onRequestClose={closeModal}
-        style={customStyles}
-        contentLabel="Example Modal"
-      >
-        <button className="modal-close" onClick={closeModal}>X</button>
-        <div className="modal-data">
-            <div className="modal-text">
-                <span>Settings:</span>
-            </div>
-            <form>
-                <div>
-                <label>Username</label>
-                <input type="text" />
-                </div>
-                <div>
-                <label>Other Settings</label>
-                <input type="text" />
-                </div>
-                <div>
-                <label>Other Settings</label>
-                <input type="text" />
-                </div>
-                <div className="modal-data-btn">
-                <button type="submit" className="submit-btn">enter</button>
-                </div>
-            </form>
-        </div>
-      </Modal>
+                <Modal
+                    isOpen={modalIsOpen}
+                    onAfterOpen={afterOpenModal}
+                    onRequestClose={closeModal}
+                    style={customStyles}
+                    contentLabel="Example Modal"
+                >
+                    <button className="modal-close" onClick={closeModal}>X</button>
+                    <div className="modal-data">
+                        <div className="modal-text">
+                            <span>Settings:</span>
+                        </div>
+                        <form onSubmit={handleSettings}>
+                            <div>
+                            <label>Username</label>
+                            <input type="text" onChange={changeUsername} defaultValue={username} />
+                            </div>
+                            <div>
+                            <label>Other Settings</label>
+                            <input type="text" />
+                            </div>
+                            <div>
+                            <label>Other Settings</label>
+                            <input type="text" />
+                            </div>
+                            <div className="modal-data-btn">
+                            <button type="submit" className="submit-btn">enter</button>
+                            </div>
+                        </form>
+                    </div>
+                </Modal>
                 </div>
                 <div className="sidebar-menu-item">
-                    <button onClick={newGame} className="sidebar-menu-item-btn"><span><i className="fa fa-plus"></i></span>&nbsp; &nbsp;Create New Game</button>
+                    <button 
+                        onClick={newGame} 
+                        className="sidebar-menu-item-btn"
+                        disabled={userInfo.room ? true : false}
+                    >
+                        <span>
+                            <i className="fa fa-plus"></i>
+                        </span>&nbsp; &nbsp;Create New Game
+                    </button>
                     <Modal
                       isOpen={modalDataOpen}
                       onAfterOpen={afterOpenDataModal}
@@ -138,29 +175,29 @@ const Sidebar = ({socket}) => {
                       style={customStyles}
                       contentLabel="Example Modal"
                     >
-        <button className="modal-close" onClick={closeDataModal}>X</button>
-        <div className="modal-game-data">
-            <div className="modal-text">
-                <span>Create New Game:</span>
-            </div>
-            <form onSubmit={createRoom}>
-                <div className="game-name-data">
-                <label>Game Name:</label>
-                <input type="text" placeholder="Text Goes Here" />
-                </div>
-                <p>Packs:</p>
-                <div className="game-data-pack">
-                <input type="radio" id="html" name="fav_language" value="Starter Pack" />
-                <label htmlFor="html">Starter Pack</label>
-                <input type="radio" id="css" name="fav_language" value="Expansion X"  />
-                <label htmlFor="css">Expansion X</label>
-                </div>
-                <div className="modal-data-game-btn">
-                <button type="button" onClick={createRoom} className="submit-btn">enter</button>
-                </div>
-            </form>
-        </div>
-      </Modal>
+                        <button className="modal-close" onClick={closeDataModal}>X</button>
+                        <div className="modal-game-data">
+                            <div className="modal-text">
+                                <span>Create New Game:</span>
+                            </div>
+                            <form onSubmit={handleCreateRoom}>
+                                <div className="game-name-data">
+                                <label>Game Name:</label>
+                                <input type="text" placeholder="Text Goes Here" value={roomname} onChange={changeRoomname} />
+                                </div>
+                                <p>Packs:</p>
+                                <div className="game-data-pack">
+                                <input type="radio" id="html" name="fav_language" value="Starter Pack" />
+                                <label htmlFor="html">Starter Pack</label>
+                                <input type="radio" id="css" name="fav_language" value="Expansion X"  />
+                                <label htmlFor="css">Expansion X</label>
+                                </div>
+                                <div className="modal-data-game-btn">
+                                <button type="submit" className="submit-btn">enter</button>
+                                </div>
+                            </form>
+                        </div>
+                    </Modal>
                 </div>
             </div>
             <div className="sidebar-menu-disconnect-area">

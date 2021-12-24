@@ -1,11 +1,11 @@
 .main-data{
     padding : 10px;
-    height: calc(100vh - 125px);
+    padding-bottom: 10rem;
+    height: calc(100vh - 3rem);
     overflow-y : scroll;
     gap : 5px;
     display : flex;
     flex-direction :column;
-    justify-content : space-between;
     background-color : #000000;
 }
 

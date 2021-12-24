@@ -2,23 +2,27 @@ import React, {useRef, useEffect, useState} from 'react';
 import "./SignIn.css";
 import Logo from "../assets/logo.png";
 import { useEthers } from "@usedapp/core";
+import { useNavigate } from 'react-router-dom';
 
-const SignIn = () => {
+const SignIn = ({socket}) => {
     const unmounted = useRef(true);
     const { activateBrowserWallet, deactivate, account, chainId } = useEthers();
     const [connectClicked, setConnectClicked] = useState(false);
+    const navigate = useNavigate();
 
-    console.log('activateBrowserWallet:::', account)
     function handleConnectWallet(){
         activateBrowserWallet();
         setConnectClicked(true);
     }
 
     useEffect( () => {
-        console.log('chainId', chainId);
         if(account && connectClicked && (chainId == 56 || chainId == 1)){
-                window.location = "/home";
+            socket.emit("addUser", {
+                wallet: account
+            })
+            navigate('/home', {replace: true})
         }
+
         return () => { unmounted.current = false }
     }, [account, connectClicked]);
 

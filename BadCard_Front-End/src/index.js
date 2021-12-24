@@ -2,15 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import { BrowserRouter as Router } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
 import { DAppProvider } from '@usedapp/core'
 
 ReactDOM.render(
   <DAppProvider config={{}}>
-    <Router>
-      <App />
-    </Router>
+    <App />
   </DAppProvider>,
   document.getElementById('root')
 );

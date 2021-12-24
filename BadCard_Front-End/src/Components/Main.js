@@ -1,24 +1,23 @@
 import React, { useState, useEffect } from "react";
 import "./Main.css";
 import Cards from "./Cards";
-import Chatbox from "./Chatbox";
 
 const Main = ({ socket }) => {
 
   const [openRooms, setOpenRooms] = useState([])
 
   useEffect(() => {
+    socket.emit("rooms");
     socket.on("rooms", (data) => {
-      console.log(data)
       let i = 0 
       const rooms = data.map((element) => {
         i ++;
-        return <Cards key={i} />
+        return <Cards key={i} room={element} socket={socket}/>
       })
 
       setOpenRooms(rooms)
-    }, [socket, openRooms.length])
-  })
+    })
+  }, [socket])
 
   return (
     <React.Fragment>
@@ -28,14 +27,6 @@ const Main = ({ socket }) => {
         </div>
         <div className="cards">
           {openRooms}
-          {/* <Cards />
-          <Cards />
-          <Cards />
-          <Cards />
-          <Cards />
-          <Cards />
-          <Cards />
-          <Cards /> */}
         </div>
       </div>
     </React.Fragment>

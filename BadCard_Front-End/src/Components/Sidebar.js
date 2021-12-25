@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import "./Sidebar.css";
 import Modal from "react-modal";
 import Logo from "../assets/logo.png";
-import {Link} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEthers } from "@usedapp/core";
 import discord_img from '../assets/discord.png';
 
@@ -25,6 +25,7 @@ const Sidebar = ({socket}) => {
     const [username, setUsername] = useState("");
     const [roomname, setRoomName] = useState("");
     const [userInfo, setUserInfo] = useState({});
+    const navigate = useNavigate()
 
     useEffect( () => {
         if(account) {
@@ -93,6 +94,11 @@ const Sidebar = ({socket}) => {
             roomname : roomname
         })
         closeDataModal()
+        socket.on('userInfo', data => {
+            if(data.wallet == account && data.room != "") {
+                navigate('/playgame/' + data.room)
+            } 
+        })
     }
 
     return (

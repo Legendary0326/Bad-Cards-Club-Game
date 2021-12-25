@@ -23,6 +23,21 @@ let rooms = []
 let users = []
 let chats = []
 
+const getOneCardContent = () => {
+    const quesNo = Math.ceil(Math.random() * contents.blackCards.length - 1)
+    const question = contents.blackCards[quesNo]['text']
+    let content = []
+
+    for(let i = 0; i < 5; i ++) {
+        const contNo = Math.ceil(Math.random() * contents.whiteCards.length - 1);
+        const con = contents.whiteCards[contNo]
+
+        content.push(con)
+    }
+
+    return { question: question, content: content }
+}
+
 const createRoom = (wallet, roomname) => {
     const user = users.find(e => e.wallet === wallet)
     if(user) {
@@ -32,7 +47,9 @@ const createRoom = (wallet, roomname) => {
             roomname, 
             [user], 
             user,
-            0
+            0,
+            [],
+            user
         )
         rooms.push(newRoom)
         user.setRoom(id);
@@ -73,8 +90,7 @@ io.sockets.on("connection", function (socket) {
 
     socket.on("room", (data) => {
         const room =  rooms.find(e => e.id == data.id)
-        const players = room.users.map(e => users.find(u => u.wallet === e.wallet));
-        socket.emit("room", {room: room, users: players})
+        socket.emit("room", room)
     })
     
     socket.on("createRoom", (data) => {
@@ -108,9 +124,77 @@ io.sockets.on("connection", function (socket) {
     socket.on("join", (data) => {
         const room = rooms.find(e => e.id == data.roomID)
         const user = users.find(e => e.wallet == data.wallet)
-        room.accept(user)
-        user.setRoom(room.id)
-        socket.emit("userInfo", user)
+        room.accept(user);
+        user.setRoom(room.id);
+        socket.join(room.id);
+        socket.emit("userInfo", user);
+        io.emit("rooms", rooms);
+        io.to(room.id).emit("room", room);
+    })
+
+    socket.on("start", roomID => {
+        const room = rooms.find(e => e.id == roomID)
+        room.state = 1
+
+        io.emit("rooms", rooms)
+        io.to(room.id).emit("room", room);
+    })
+
+    socket.on('content', roomID => {
+        const content = getOneCardContent()
+        io.to(roomID).emit("content", content);
+    })
+
+    socket.on("next", data => {
+        const content = getOneCardContent()
+        let room = rooms.find(e => e.id == data.room.id)
+
+        room.pick = []
+        data.vote.forEach(e => {
+            let user = room.users.find(o => o.wallet ==  e)
+            if(user.vote) {
+                user.vote = parseInt(user.vote) + 1;
+            } else {
+                user.vote = 1
+            }
+        })
+
+        const userCount = room.users.length;
+        const judgePos  = room.users.findIndex(e => e.wallet == room.judge.wallet)
+        const newJudge  = room.users[(judgePos + 1) % userCount]
+
+        room.judge = newJudge;
+
+        io.to(room.id).emit("room", room);
+        io.to(room.id).emit('content', content)
+
+        console.log(room)
+    })
+
+    socket.on("pick", data => {
+        let room = rooms.find(e => e.id == data.room.id)
+        room.pick.push({
+            user : data.user,
+            text : data.text
+        })
+
+        io.to(room.id).emit("room", room)
+    })
+
+    socket.on("quit", roomID => {
+        const room = rooms.find(e => e.id == roomID)
+
+        room.users.forEach(element => {
+            const user = users.find(e => e.wallet == element.wallet) 
+            user.room = ""
+            user.isPart =  false
+        });
+        io.to(room.id).emit("quit");
+        const index = rooms.findIndex( e => e.id === room.id)
+        if(index !== -1) {
+            return rooms.splice(index, 1)[0];
+        }      
+        room.finish()
         io.emit("rooms", rooms)
     })
     // const me = game.createPlayer(socket.id);

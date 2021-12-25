@@ -18,6 +18,7 @@
 }
 
 .first{
+    padding-top: 50px;
     display: flex;
 }
 .player-x{
@@ -47,15 +48,14 @@
     margin-left: 20px;
 }
 .player-y{
-    margin-top: 20px;
-    margin-left: 500px;
-    border: none;
-    background-color : #1a1a1a;
-    color : #ffffff;
-    padding : 10px;
+    margin-left: auto;
+    FONT-VARIANT: JIS04;
+    background-color: #1a1a1a;
+    color: #ffffff;
+    padding: 10px;
     border-radius: 5px;
-    text-transform : capitalize;
-    width : 150px;
+    text-transform: capitalize;
+    width: 150px;
 }
 .player-y h3{
     color: white;
@@ -71,7 +71,6 @@
 }
 .second h1{
     color: white;
-    margin-left: 20px;
 }
 .second h3{
     color:white;
@@ -81,13 +80,10 @@
     color: white;
     margin-left:20px;
 }
-.third{
-    margin-top: 100px;
-}
 .third-data{
     display: flex;
     flex-wrap : wrap;
-    justify-content : space-between;
+    /* justify-content : space-between; */
     align-items : center;
     gap:10px;
     margin : 20px;

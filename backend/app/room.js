@@ -6,12 +6,14 @@ Room state
     2 : finished
 */
 
-function Room (id = "", name = "", users = [], creator = {}, state = 0) {
+function Room (id = "", name = "", users = [], creator = {}, state = 0, pick = [], judge = "") {
     this.id = id;
     this.name = name;
-    this.creator = creator,
+    this.creator = creator;
     this.state = state;
     this.users = users;
+    this.pick =  pick;
+    this.judge = judge
 }
 
 Room.prototype.accept = function (user) {

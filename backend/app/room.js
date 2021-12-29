@@ -3,17 +3,19 @@
 Room state
     0 : waiting,
     1 : progressing,
-    2 : finished
+    2 : emulating,
+    3 : finished
 */
 
-function Room (id = "", name = "", users = [], creator = {}, state = 0, pick = [], judge = "") {
+function Room (id = "", name = "", users = [], creator = {}, state = 0, pick = [], judge = "", turn = 1) {
     this.id = id;
     this.name = name;
     this.creator = creator;
     this.state = state;
     this.users = users;
     this.pick =  pick;
-    this.judge = judge
+    this.judge = judge;
+    this.turn = turn
 }
 
 Room.prototype.accept = function (user) {
@@ -28,9 +30,7 @@ Room.prototype.lose = function (user) {
 }
 
 Room.prototype.finish = function () {
-    this.state = 2;
-    this.creator = {};
-    this.users = [];
+    this.state = 3;
 }
 
 module.exports = Room;

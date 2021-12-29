@@ -5,6 +5,7 @@ import Logo from "../assets/logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import { useEthers } from "@usedapp/core";
 import discord_img from '../assets/discord.png';
+import { Button } from 'react-bootstrap';
 
 const customStyles = {
     content: {
@@ -23,23 +24,24 @@ const Sidebar = ({socket}) => {
     const [modalDataOpen, setModelDataOpen] = useState(false);
     const { account, deactivate } = useEthers();
     const [username, setUsername] = useState("");
+    const [user, setUser] = useState({});
     const [roomname, setRoomName] = useState("");
-    const [userInfo, setUserInfo] = useState({});
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     useEffect( () => {
         if(account) {
             socket.emit("userInfo", {wallet: account})
-            socket.on("userInfo", (data) => {
-                setUserInfo(data);
-                setUsername(data.username)
+            socket.on("userInfo", data => {
+                if(data) {
+                    setUser(data)
+                    setUsername(data.username);
+                }
             })
         }
     }, [socket, account])
 
     useEffect( () => {
-
-    }, [username, roomname, userInfo])
+    }, [username, roomname])
 
     function openModal() {
       setIsOpen(true);
@@ -119,7 +121,7 @@ const Sidebar = ({socket}) => {
                     </Link>
                 </div>
                 <div className="sidebar-menu-item">
-                    <Link to={"/playgame/" + (userInfo.room ? userInfo.room : "")} style={{display : "flex", gap : "10px"}}>
+                    <Link to={"/playgame/" + (user ? (user.room ? user.room : "") : "")} style={{display : "flex", gap : "10px"}}>
                         <span><i className="fa fa-user"></i></span>
                         <span>Games</span>
                     </Link>
@@ -165,15 +167,14 @@ const Sidebar = ({socket}) => {
                 </Modal>
                 </div>
                 <div className="sidebar-menu-item">
-                    <button 
+                    <Button 
                         onClick={newGame} 
-                        className="sidebar-menu-item-btn"
-                        disabled={userInfo.room ? true : false}
+                        disabled={user ? (user.room ? true : false) : false}
                     >
                         <span>
                             <i className="fa fa-plus"></i>
-                        </span>&nbsp; &nbsp;Create New Game
-                    </button>
+                        </span>&nbsp;Create New Game
+                    </Button>
                     <Modal
                       isOpen={modalDataOpen}
                       onAfterOpen={afterOpenDataModal}

@@ -22,7 +22,7 @@ const Cards = ({room, socket}) => {
             <span>Private? NO</span>
           </div>
           <div className="main-card-bottom">
-            {!room.users.find(e => e.wallet == account)
+            {!room.users.find(e => e.wallet == account) && room.state == 0
               ? (<button onClick={ handleJoin }>Join</button>)
               : ""
             }

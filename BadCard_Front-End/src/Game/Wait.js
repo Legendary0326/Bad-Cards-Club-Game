@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Button } from 'react-bootstrap';
 
 const Wait = ({ socket, room, user }) => {
 
@@ -19,15 +20,24 @@ const Wait = ({ socket, room, user }) => {
     return (
         <div style={{ textAlign: 'center', paddingTop: '5rem' }}>
             <div className="second">
-                <h1>Waiting users to join...</h1>
+                <h1>
+                    Waiting For Other Players To Join
+                    <span className="dot first-dot">.</span>
+                    <span className="dot second-dot">.</span>
+                    <span className="dot third-dot">.</span>
+                </h1>
                 <h3>
-                    <button 
-                        className="sidebar-menu-item-btn" 
-                        style={{
-                            display: 'inline',
-                            disabled: disable
-                        }} 
-                        onClick={onStart}>Start the game</button>
+                    {( room && user && room.creator.wallet == user.wallet ) 
+                        ?
+                            <Button 
+                                onClick={onStart}
+                                size="lg"
+                                disabled={room.users.length > 1 ? false: true}
+                            >
+                                Start the game
+                            </Button>
+                        : ""
+                    }
                 </h3>
             </div>
             <div className="third" id="origin-third">

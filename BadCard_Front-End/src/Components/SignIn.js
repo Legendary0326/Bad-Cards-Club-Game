@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 const SignIn = ({socket}) => {
     const unmounted = useRef(true);
-    const { activateBrowserWallet, deactivate, account, chainId } = useEthers();
+    const { activateBrowserWallet, account, chainId } = useEthers();
     const [connectClicked, setConnectClicked] = useState(false);
     const navigate = useNavigate();
 

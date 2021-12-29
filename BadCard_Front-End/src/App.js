@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import Home from "./Components/Home";
 import Games from "./Components/Games";
@@ -7,46 +6,53 @@ import {
   Routes, 
   Route 
 } from 'react-router-dom';
-import ModalData from "./Components/Modal";
-import SignIn from "./Components/SignIn";
 import Sidebar from "./Components/Sidebar";
-import io from 'socket.io-client';
+import { useEthers } from "@usedapp/core";
+import { useEffect, useState } from 'react';
 
-const socket = io.connect('/');
+function App({socket}) {
+  const [userInfo, setUserInfo] = useState([])
+  const { account } = useEthers();
 
-function App() {
+  useEffect(() => {
+    if(account) {
+      socket.emit("userInfo", {wallet: account})
+      socket.on("userInfo", data => {
+        setUserInfo(data)
+      })
+    }
+  }, [account, socket])
   return (
-      <BrowserRouter>
-        <Routes>
-          <Route path="/modal" element={<ModalData />} />
-          <Route 
-            path="/playgame/:id" 
-            element={
-              <div className="row main-body" >
-                <div className="col-2">
-                  <Sidebar socket={socket} />
-                </div>
-                <div className="col-10">
-                  <Games socket={socket}/>
-                </div>
+    <div className="row main-body" >
+      <Routes>
+        <Route 
+          path="playgame/:id" 
+          element={
+            <>
+              <div className="col-2">
+                <Sidebar socket={socket} />
               </div>
-            }
-            />
-          <Route 
-            path="/home" 
-            element={
-              <div className="row main-body" >
-                <div className="col-2">
-                  <Sidebar socket={socket} />
-                </div>
-                <div className="col-10">
-                    <Home socket={socket} />
-                </div>
+              <div className="col-10">
+                <Games socket={socket} user={userInfo}/>
               </div>
-            } />
-          <Route path="/" element={<SignIn socket={socket} />} />
-        </Routes>
-      </BrowserRouter>
+            </>
+          }
+        />
+        <Route 
+          path="home" 
+          element={
+            <>
+              <div className="col-2">
+                <Sidebar socket={socket} />
+              </div>
+              <div className="col-10">
+                <Home socket={socket} user={userInfo}/>
+              </div>
+            </>
+          } 
+        />
+      </Routes>
+    </div>
   );
 }
 

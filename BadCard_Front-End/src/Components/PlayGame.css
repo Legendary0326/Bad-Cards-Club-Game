@@ -2,10 +2,10 @@
     padding : 10px;
     height: calc(100vh - 125px);
     overflow-y : scroll;
-    gap : 5px;
+    /* gap : 5px; */
     display : flex;
     flex-direction :column;
-    justify-content : space-between;
+    /* justify-content : space-between; */
     background-color : #000000;
 }
 
@@ -105,4 +105,95 @@
     text-transform : capitalize;
     font-size : 20px;
     font-weight : bold;
+}
+
+.game-info {
+    margin-left: auto;
+}
+
+.game-info .submission {
+    color: white;
+    text-align: center;
+    padding: 1rem;
+}
+
+.game-info .submission h5 {
+    line-height: .75;
+}
+
+.game-info .timer {
+    text-align: center;
+    color: white;
+}
+/* 
+@keyframes first {
+    
+} */
+
+.first-dot {
+    animation-name: first;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+}
+
+.second-dot {
+    animation-name: second;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+}
+
+.third-dot {
+    animation-name: third;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes first {
+    0% {
+        visibility: hidden;
+    }
+
+    25% {
+        visibility: hidden;
+    }
+
+    50% {
+        visibility: visible;
+    }
+
+    100% {
+        visibility: visible;
+    }
+}
+
+@keyframes second {
+    0% {
+        visibility:hidden;
+    }
+
+    50% {
+        visibility:hidden;
+    }
+
+    75% {
+        visibility:visible;
+    }
+
+    100% {
+        visibility: visible;
+    }
+}
+
+@keyframes third {
+    0% {
+        visibility:hidden;
+    }
+
+    75% {
+        visibility:hidden;
+    }
+    
+    100% {
+        visibility: visible;
+    }
 }

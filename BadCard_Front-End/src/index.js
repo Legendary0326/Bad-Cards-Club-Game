@@ -4,10 +4,26 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { DAppProvider } from '@usedapp/core'
+import { 
+  BrowserRouter, 
+  Routes, 
+  Route 
+} from 'react-router-dom';
+import ModalData from "./Components/Modal";
+import SignIn from "./Components/SignIn";
+import io from 'socket.io-client';
+
+const socket = io.connect('/');
 
 ReactDOM.render(
   <DAppProvider config={{}}>
-    <App />
+    <BrowserRouter>
+      <Routes>
+        <Route path="/modal" element={<ModalData />} />
+        <Route path="/" element={<SignIn socket={socket} />} />
+      </Routes>
+      <App socket={socket}/>
+    </BrowserRouter>
   </DAppProvider>,
   document.getElementById('root')
 );

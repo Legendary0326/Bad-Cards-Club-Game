@@ -1,27 +1,38 @@
 import { useState, useEffect } from "react";
 
-const End = ({ socket }) => {
+const End = ({ socket, room, user }) => {
+    const [championStrs, setWinnerStr] = useState("")
+    const [champions, setWinner] = useState([])
+    useEffect(() => {
+        const winners = room.users.filter(e => e.vote > 4)
+        const winnersStr = winners.map(e => e.username + ' ').toString()
+
+        setWinner(winners)
+        setWinnerStr(winnersStr)
+    }, [room])
     return (
         <>
-            <div className="second">
-                <h1>Your card</h1>
-            </div>
-            {/* {card} */}
-            <div className="third">
-                <div className="third-data">
-                    <div 
-                        to
-                        className="third-data1 quiz-card" 
-                        // onDoubleClick={onPick} 
-                        // key={index ++ } 
-                        style={{ cursor: 'pointer' }}
-                    >
-                        <p>Player 1 gets top score.</p>
-                    </div>
+            <div 
+                style={{
+                    textAlign: 'center',
+                    position: 'relative',
+                    marginTop: 'auto',
+                    marginBottom: 'auto',
+                    color: 'white',
+                }}
+            >
+                <div 
+                    style={{
+                        display: 'inline-block',
+                        padding: '1rem'
+                    }}
+                >
+                    {
+                        (champions.length > 1) 
+                        ? (<h1>{championStrs} Are Winners In This Game!</h1>)
+                        : (<h1>{championStrs} Is Winner In This Game!</h1>)
+                    }
                 </div>
-            </div>
-            <div className="second">
-                <h1>is voted!</h1>
             </div>
         </>
     );

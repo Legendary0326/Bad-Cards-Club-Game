@@ -1,9 +1,10 @@
-function User (wallet = "", username = "", isPart = false, isJudge = false, room = "") {
+function User (wallet = "", username = "", isPart = false, isJudge = false, room = "", isApprove = false) {
     this.wallet = wallet;
     this.username = username;
     this.isPart = isPart;
     this.isJudge = isJudge;
     this.room = room;
+    this.isApprove = isApprove;
 }
 
 User.prototype.setUsername = function (username) {
@@ -18,6 +19,7 @@ User.prototype.setRoom = function (room) {
 User.prototype.leaveRoom = function() {
     this.room = "";
     this.isPart = false;
+    this.isApprove = false;
 }
 
 module.exports = User;

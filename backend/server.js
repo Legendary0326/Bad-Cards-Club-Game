@@ -10,7 +10,8 @@ const server = http.createServer(app);
 const io = require('socket.io')(server);
 const User = require('./app/user');
 const Room = require('./app/room');
-const contents = require('./contents/card.json')
+const contents = require('./contents/card.json');
+const e = require('express');
 
 server.listen(process.env.PORT || 8000);
 
@@ -35,9 +36,10 @@ const getOneCardContent = () => {
     return { question: question, content: content }
 }
 
-const createRoom = (wallet, roomname) => {
+const createRoom = (wallet, roomname, password, pack) => {
     const user = users.find(e => e.wallet === wallet)
     if(user) {
+        user.isApprove = true;
         const id = Date.now()
         const newRoom =  new Room(
             id, 
@@ -46,7 +48,10 @@ const createRoom = (wallet, roomname) => {
             user,
             0,
             [],
-            user
+            user,
+            1,
+            password, 
+            pack
         )
         rooms.push(newRoom)
         user.setRoom(id);
@@ -61,7 +66,7 @@ const addUser = (username, wallet) => {
     const user = users.find((user) => user.wallet == wallet);
     if(user) {
         user.wallet = wallet;
-        user.username = username
+        user.username = username;
         return user
     } else {
         const newOne = new User(
@@ -91,7 +96,7 @@ io.sockets.on("connection", function (socket) {
     })
     
     socket.on("createRoom", (data) => {
-        const info = createRoom(data.wallet, data.roomname)
+        const info = createRoom(data.wallet, data.roomname, data.password, data.pack)
         if(info) {
             socket.join(info.newRoom.id)
         }
@@ -121,6 +126,7 @@ io.sockets.on("connection", function (socket) {
     socket.on("join", (data) => {
         const room = rooms.find(e => e.id == data.roomID)
         const user = users.find(e => e.wallet == data.wallet)
+        user.isApprove = data.isApprove;
         room.accept(user);
         user.setRoom(room.id);
         socket.join(room.id);
@@ -130,18 +136,49 @@ io.sockets.on("connection", function (socket) {
     })
 
     socket.on("start", roomID => {
-        const room = rooms.find(e => e.id == roomID)
+        let room = rooms.find(e => e.id == roomID)
         room.pick_turn = room.users.find(e => e.wallet != room.judge.wallet)
         room.state = 1
 
         io.emit("rooms", rooms)
         io.to(room.id).emit("room", room);
         gameTimer = setInterval(() => {
-            if(timer < 1) {
+            if(timer < 0) {
                 if(room.state == 1) {
                     timer = 60
                 } else if(room.state == 2) {
                     timer = 10
+                }
+
+                if(room.pick_turn) {
+                    const currentIndex = room.users.findIndex(e => e.wallet == room.pick_turn.wallet)
+                    if(room.pick_turn.wallet != room.judge.wallet) {
+                        let nextUser = null
+                        for(let i = 0; i < room.users.length; i ++) {
+                            if(i <= currentIndex) 
+                                continue;
+                            if(room.users[i].wallet != room.judge.wallet) {
+                                nextUser = room.users[i]
+                                break;
+                            }
+                        }
+                        room.pick.push({
+                            user: room.pick_turn,
+                            text: ''
+                        })
+                        room.pick_turn = nextUser
+                        io.to(room.id).emit("room", room)
+                    } else {
+                        const data = {
+                            room: room,
+                            vote: []
+                        }
+                        console.log('here')
+                        next(data)
+                    }
+
+                } else {
+                    room.pick_turn = room.judge;
                 }
             }
             io.to(room.id).emit("timer", timer)
@@ -154,7 +191,7 @@ io.sockets.on("connection", function (socket) {
         io.to(roomID).emit("content", content);
     })
 
-    socket.on("next", data => {
+    const next = (data) => {
         const content = getOneCardContent()
         let room = rooms.find(e => e.id == data.room.id)
 
@@ -170,23 +207,12 @@ io.sockets.on("connection", function (socket) {
         const winner = room.users.find(e => e.vote > 4)
         if(winner) {
             let room = rooms.find(e => e.id == data.room.id)
-    
-            room.users.forEach(element => {
-                let user = users.find(e => e.wallet == element.wallet) 
-                user.room = ""
-                user.isPart =  false
-            });
             room.finish()
             clearInterval(gameTimer)
             io.to(room.id).emit("room", room);
 
         } else {
             room.state = 2
-            gameTimer = setInterval(() => {
-                io.to(room.id).emit("timer", timer)
-                timer --;
-            }, 1000)
-
             setTimeout( () => {
                 timer = 60
                 room.state = 1
@@ -208,6 +234,13 @@ io.sockets.on("connection", function (socket) {
             io.to(room.id).emit("result", data.vote)
             io.to(room.id).emit("room", room);
         }
+
+    }
+
+    socket.on("next", data => {
+        if(data.room.users && data.room.users.length) {
+            next(data)
+        }
     })
 
     socket.on("quit", data => {
@@ -217,6 +250,7 @@ io.sockets.on("connection", function (socket) {
             let user = users.find(e => e.wallet == element.wallet)
             user.room = ""
             user.isPart = false
+            user.vote = undefined;
         })
 
         if(roomIndex !== -1) {
@@ -227,40 +261,26 @@ io.sockets.on("connection", function (socket) {
         io.emit("rooms", rooms)
     })
 
-    socket.on("next_pick_turn", data => {
-        let room = rooms.find(e => e.id == data.id)
-        let current_user_index
-        if(room.pick_turn) {
-            current_user_index = room.users.findIndex(e => room.pick_turn.wallet == e.wallet)
-        } else {
-            current_user_index = -1
-        }
-        let next_pick_turn_user = null
-        for(let i = 0; i < room.users.length; i ++) {
-            if(i < current_user_index) 
-                continue;
-            if(room.users[i].wallet != room.judge.wallet && room.users[i].wallet != room.pick_turn.wallet) {
-                next_pick_turn_user = room.users[i]
-                break;
-            }
-        }
-        if(next_pick_turn_user) {
-            timer = 60
-        } else {
-            clearInterval(gameTimer)
-            timer = 10
-        }
-        room.pick_turn = next_pick_turn_user
-        io.to(room.id).emit("room", room)
-    })
-
     socket.on("pick", data => {
         let room = rooms.find(e => e.id == data.room.id)
+
+        timer = 60
+
         room.pick.push({
             user : data.user,
             text : data.text
         })
-
+        const currentIndex = room.users.findIndex(e => e.wallet == room.pick_turn.wallet)
+        let nextUser = null
+        for(let i = 0; i < room.users.length; i ++) {
+            if(i <= currentIndex) 
+                continue;
+            if(room.users[i].wallet != room.judge.wallet) {
+                nextUser = room.users[i]
+                break;
+            }
+        }
+        room.pick_turn = nextUser
         io.to(room.id).emit("room", room)
     })
 
@@ -274,6 +294,15 @@ io.sockets.on("connection", function (socket) {
         user.room = "";
         user.isPart = false;
         socket.leave(room.id);
-        io.to(room.id).emit("room", room);
+        if(room.users.length == 0) {
+            const roomIndex = rooms.findIndex(e => e.id ==  room.id);
+            rooms.splice(roomIndex, 1);
+            clearInterval(gameTimer);
+            io.to(room.id).emit("room", null);
+            io.emit("rooms", rooms);
+        } else {
+            io.to(room.id).emit("room", room);
+        }
+        socket.emit("userInfo", user)
     })
 });

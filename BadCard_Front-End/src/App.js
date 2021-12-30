@@ -18,7 +18,9 @@ function App({socket}) {
     if(account) {
       socket.emit("userInfo", {wallet: account})
       socket.on("userInfo", data => {
-        setUserInfo(data)
+        if(data) {
+          setUserInfo(data)
+        }
       })
     }
   }, [account, socket])
@@ -30,7 +32,7 @@ function App({socket}) {
           element={
             <>
               <div className="col-2">
-                <Sidebar socket={socket} />
+                <Sidebar socket={socket} user={userInfo} />
               </div>
               <div className="col-10">
                 <Games socket={socket} user={userInfo}/>
@@ -43,7 +45,7 @@ function App({socket}) {
           element={
             <>
               <div className="col-2">
-                <Sidebar socket={socket} />
+                <Sidebar socket={socket} user={userInfo} />
               </div>
               <div className="col-10">
                 <Home socket={socket} user={userInfo}/>

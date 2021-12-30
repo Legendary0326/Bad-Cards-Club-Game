@@ -24,7 +24,7 @@ const Header = ({ socket, room, user }) => {
 
     const leave = () => {
         socket.emit("leave", {room: room, user: user})
-        if(user.wallet == room.judge.wallet && room.state == 1) {
+        if(user.wallet == room.judge.wallet && room.state == 1 && room.users.length > 1) {
             socket.emit("next", { vote: [], room: room })
         }
         navigate('/home');
@@ -50,7 +50,9 @@ const Header = ({ socket, room, user }) => {
                                         style={{ 
                                             backgroundColor: (room.pick_turn ? (room.pick_turn.wallet == e.wallet ? 'white': '#999'): '#999')
                                         }}
-                                    >{e.username}</button>
+                                    >{e.username}
+                                    <p style={{ marginBottom: 0 }}>{e.vote ? e.vote : 0} Points</p>
+                                    </button>
                                 </div>
                             )
                         :  ""
@@ -76,7 +78,7 @@ const Header = ({ socket, room, user }) => {
                             </Button>
                         </OverlayTrigger>
                         { room && user && room.state == 0 && user.wallet == room.creator.wallet || 
-                        room && user && room.state == 2 && user.wallet == room.creator.wallet
+                        room && user && room.state == 3 && user.wallet == room.creator.wallet
                             ? 
                             <OverlayTrigger
                                 placement="left"

@@ -32,7 +32,7 @@ const Wait = ({ socket, room, user }) => {
                             <Button 
                                 onClick={onStart}
                                 size="lg"
-                                disabled={room.users.length > 1 ? false: true}
+                                disabled={room.users.length > 3 ? false: true}
                             >
                                 Start the game
                             </Button>

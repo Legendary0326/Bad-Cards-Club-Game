@@ -86,14 +86,12 @@ const Normal = ({ socket, room, user }) => {
                             <div className="third-data">
                             {   room.pick 
                                 ?   room.pick.map(e => 
-                                        <>
-                                            <div 
-                                                className="third-data1"
-                                                key={i ++ } 
-                                            >
-                                                <p>{e.text}</p>
-                                            </div>
-                                        </>
+                                        <div 
+                                            className="third-data1"
+                                            key={i ++ } 
+                                        >
+                                            <p>{e.text}</p>
+                                        </div>
                                     )
                                 :   <></>
                             }

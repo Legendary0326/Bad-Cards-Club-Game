@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Header from '../Game/Header';
 import Judge from '../Game/Judge';
@@ -20,7 +20,8 @@ const PlayGame = ({socket, user}) => {
                 if(data) {
                     setRoomInfo(data);
                 } else if(data === null) {
-                    navigate('/home');
+                    user.room = "";
+                    navigate('/home', {user: user});
                 }
             })
         }

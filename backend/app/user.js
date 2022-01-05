@@ -1,10 +1,11 @@
-function User (wallet = "", username = "", isPart = false, isJudge = false, room = "", isApprove = false) {
+function User (wallet = "", username = "", isPart = false, isJudge = false, room = "", isApprove = false, socket = "") {
     this.wallet = wallet;
     this.username = username;
     this.isPart = isPart;
     this.isJudge = isJudge;
     this.room = room;
     this.isApprove = isApprove;
+    this.socket = socket;
 }
 
 User.prototype.setUsername = function (username) {

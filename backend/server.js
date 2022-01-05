@@ -1,19 +1,17 @@
-// create Express listener instance
-const app = require('connect')()
-            .use(require("morgan")("dev"))
-            .use(require("compression")())
-            .use(require("serve-static")("public"));
-
+const express = require('express');
+const cors = require('cors');
 const http = require('http');   
+
+const app = express();
+
+app.use(cors());
 const server = http.createServer(app);
+server.listen(process.env.PORT || 8000);
 // create socket.io server and bind it to the existing http server
 const io = require('socket.io')(server);
 const User = require('./app/user');
 const Room = require('./app/room');
 const contents = require('./contents/card.json');
-const e = require('express');
-
-server.listen(process.env.PORT || 8000);
 
 let rooms = []
 let users = []
@@ -62,7 +60,7 @@ const createRoom = (wallet, roomname, password, pack) => {
     }
 }
 
-const addUser = (username, wallet) => {
+const addUser = (username, wallet, socket_id) => {
     const user = users.find((user) => user.wallet == wallet);
     if(user) {
         user.wallet = wallet;
@@ -70,7 +68,13 @@ const addUser = (username, wallet) => {
         return user
     } else {
         const newOne = new User(
-            wallet, 'User' + (users.length + 1), 
+            wallet, 
+            'User' + (users.length + 1), 
+            false,
+            false,
+            "",
+            false,
+            socket_id
         )
         users.push(newOne)
         return newOne
@@ -105,7 +109,7 @@ io.sockets.on("connection", function (socket) {
     })
 
     socket.on("addUser", (data) => {
-        const newUser = addUser(data.username, data.wallet)
+        const newUser = addUser(data.username, data.wallet, socket.id)
         socket.emit("userInfo", newUser)
     }) 
 
@@ -126,13 +130,15 @@ io.sockets.on("connection", function (socket) {
     socket.on("join", (data) => {
         const room = rooms.find(e => e.id == data.roomID)
         const user = users.find(e => e.wallet == data.wallet)
-        user.isApprove = data.isApprove;
-        room.accept(user);
-        user.setRoom(room.id);
-        socket.join(room.id);
-        socket.emit("userInfo", user);
-        io.emit("rooms", rooms);
-        io.to(room.id).emit("room", room);
+        if(user && room) {
+            user.isApprove = data.isApprove;
+            room.accept(user);
+            user.setRoom(room.id);
+            socket.join(room.id);
+            socket.emit("userInfo", user);
+            io.emit("rooms", rooms);
+            io.to(room.id).emit("room", room);
+        }
     })
 
     socket.on("start", roomID => {
@@ -173,7 +179,6 @@ io.sockets.on("connection", function (socket) {
                             room: room,
                             vote: []
                         }
-                        console.log('here')
                         next(data)
                     }
 
@@ -245,20 +250,22 @@ io.sockets.on("connection", function (socket) {
 
     socket.on("quit", data => {
         const roomIndex = rooms.findIndex(e => e.id ==  data.id);
-        const room = rooms[roomIndex]
-        room.users.forEach(element => {
-            let user = users.find(e => e.wallet == element.wallet)
-            user.room = ""
-            user.isPart = false
-            user.vote = undefined;
-        })
+        if(roomIndex > -1) {
+           const room = rooms[roomIndex]
+            room.users.forEach(element => {
+                let user = users.find(e => e.wallet == element.wallet)
+                user.room = ""
+                user.isPart = false
+                user.vote = undefined;
+            })
 
-        if(roomIndex !== -1) {
-            rooms.splice(roomIndex, 1)
+            if(roomIndex !== -1) {
+                rooms.splice(roomIndex, 1)
+            }
+
+            io.to(data.id).emit("room", null)
+            io.emit("rooms", rooms)
         }
-
-        io.to(data.id).emit("room", null)
-        io.emit("rooms", rooms)
     })
 
     socket.on("pick", data => {
@@ -289,6 +296,7 @@ io.sockets.on("connection", function (socket) {
         const userId = room.users.findIndex(e => e.wallet == data.user.wallet)
         if(userId !== -1) {
             room.users.splice(userId, 1)
+            console.log(users, room.users)
         }
         const user = users.find(e => e.wallet == data.user.wallet);
         user.room = "";
@@ -296,7 +304,9 @@ io.sockets.on("connection", function (socket) {
         socket.leave(room.id);
         if(room.users.length == 0) {
             const roomIndex = rooms.findIndex(e => e.id ==  room.id);
-            rooms.splice(roomIndex, 1);
+            if(roomIndex > -1) {
+                rooms.splice(roomIndex, 1);
+            }
             clearInterval(gameTimer);
             io.to(room.id).emit("room", null);
             io.emit("rooms", rooms);
@@ -305,4 +315,36 @@ io.sockets.on("connection", function (socket) {
         }
         socket.emit("userInfo", user)
     })
+
+    const disconnect = (socketInfo) => {
+        const userIndex = users.findIndex(e => e.socket == socketInfo.id);
+        if(userIndex > -1) {
+            users.splice(userIndex, 1);
+            for(let room of rooms) {
+                const roomUserIndex = room.users.findIndex(ele => ele.socket == socketInfo.id)
+                if(roomUserIndex > -1) {
+                    room.users.splice(roomUserIndex, 1);
+                }
+                if(room.users.length == 0) {
+                    const roomIndex = rooms.findIndex(e => e.id ==  room.id);
+                    if(roomIndex > -1) {
+                        rooms.splice(roomIndex, 1);
+                    }
+                    clearInterval(gameTimer);
+                    io.to(room.id).emit("room", null);
+                    io.emit("rooms", rooms);
+                } else {
+                    io.to(room.id).emit("room", room);
+                }
+            }
+        }
+    }
+
+    socket.on("logout", function () {
+        disconnect(socket);
+    })
+
+    socket.on("disconnect", function () {
+        disconnect(socket);
+    });
 });

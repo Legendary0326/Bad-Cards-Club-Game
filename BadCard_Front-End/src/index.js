@@ -13,7 +13,10 @@ import ModalData from "./Components/Modal";
 import SignIn from "./Components/SignIn";
 import io from 'socket.io-client';
 
-const socket = io.connect('/');
+const socket = io.connect(`http://${window.location.hostname}:8000`, 
+  { 
+    transports: ['websocket', 'polling', 'flashsocket'] 
+  });
 
 ReactDOM.render(
   <DAppProvider config={{}}>

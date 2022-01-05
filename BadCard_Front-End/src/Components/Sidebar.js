@@ -5,7 +5,7 @@ import Logo from "../assets/logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import { useEthers } from "@usedapp/core";
 import discord_img from '../assets/discord.png';
-import { Button, Form } from 'react-bootstrap';
+import { Button, Form, InputGroup, FormControl } from 'react-bootstrap';
 
 const customStyles = {
     content: {
@@ -27,6 +27,7 @@ const Sidebar = ({socket, user}) => {
     const [pack, setPack] = useState(1);
     const [password, setPassword] = useState("");
     const [roomname, setRoomName] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
 
     // useEffect( () => {
@@ -68,6 +69,7 @@ const Sidebar = ({socket, user}) => {
 
     function handleDisconnect() {
         deactivate();
+        socket.emit("logout");
         window.location = "/";
     }
 
@@ -88,6 +90,10 @@ const Sidebar = ({socket, user}) => {
         setPassword(e.target.value)
     }
 
+    const changePasswordShow = () => {
+        setShowPassword(!showPassword);
+    }
+
     const handleSettings = (e) => {
         socket.emit("addUser", {
             username : username,
@@ -105,7 +111,7 @@ const Sidebar = ({socket, user}) => {
         })
         closeDataModal()
         socket.on('userInfo', data => {
-            if(data.wallet == account && data.room != "") {
+            if(data && data.wallet == account && data.room != "") {
                 navigate('/playgame/' + data.room)
             } 
         })
@@ -203,10 +209,28 @@ const Sidebar = ({socket, user}) => {
                                     <Form.Label>Game Name</Form.Label>
                                     <Form.Control type="text" placeholder="Text Goes Here" value={roomname} onChange={changeRoomname} required={true} />
                                 </Form.Group>
-
-                                <Form.Group className="mb-3" controlId="formBasicPassword">
+                                <Form.Group className="mb-3">
                                     <Form.Label>Password</Form.Label>
-                                    <Form.Control type="password" placeholder="Password" disabled={pack == 1 ? true: false} required={pack == 2 ? true : false} value={password} onChange={changePassword} />
+                                    <InputGroup className="mb-3">
+                                        <FormControl
+                                        placeholder="Password"
+                                        aria-label="Password"
+                                        aria-describedby="basic-addon2"
+                                        type={ pack == 1 ? "password" : (showPassword ? 'text' : 'password')}
+                                        disabled={pack == 1 ? true: false} required={pack == 2 ? true : false} value={password} onChange={changePassword}
+                                        />
+                                        <InputGroup.Text id="basic-addon2" onClick={pack == 1 ? null :changePasswordShow} style={{cursor: "pointer"}}>
+                                            {
+                                                pack == 1 
+                                                ? <i className="fa fa-eye"></i>
+                                                : (
+                                                    showPassword 
+                                                    ? <i className="fa fa-eye-slash"></i> 
+                                                    : <i className="fa fa-eye"></i>
+                                                )
+                                            }
+                                        </InputGroup.Text>
+                                    </InputGroup>
                                 </Form.Group>
                                 <Form.Group className="mb-3">
                                     <Form.Label>Packs</Form.Label>

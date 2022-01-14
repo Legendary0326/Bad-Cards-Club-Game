@@ -12,7 +12,7 @@ const Home = ({socket, user}) => {
             </div> */}
             <div className="main">
                 <Main socket={socket} user={user} />
-                <Chatbox socket={socket} user={user} />
+                <Chatbox socket={socket} user={user} chatAll={true} />
             </div>
         </div>
     )

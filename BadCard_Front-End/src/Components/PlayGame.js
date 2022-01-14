@@ -32,20 +32,27 @@ const PlayGame = ({socket, user}) => {
 
     return (
         roomInfo 
-        ?   <div className="playgame">
+        ?   <div 
+                className="playgame" 
+                style={{
+                    backgroundImage: roomInfo.state == 0 ? 'url("' + require("../assets/buddy.svg").default + '")' : '',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center',
+                }}
+            >
                 <Header socket={socket} room={roomInfo} user={user} />
                 {
                     roomInfo.state == 0 // waiting...
                     ? (<Wait socket={socket} room={roomInfo} user={user} />)
                     : (
-                        roomInfo.state == 1 || roomInfo.state == 2 // progressing
+                        roomInfo.state == 1 || roomInfo.state == 2 || roomInfo.state == 3// progressing
                         ? (
                             user.wallet == roomInfo.judge.wallet  
                             ? (<Judge socket={socket} room={roomInfo} user={user} />) // if you are a judge
                             : (<Normal socket={socket} room={roomInfo} user={user} />) // you are normal player
                         )
                         : (
-                            roomInfo.state == 3 // end
+                            roomInfo.state == 4 // end
                             ? (<End socket={socket} room={roomInfo} user={user} />)
                             : (<></>)
                         )

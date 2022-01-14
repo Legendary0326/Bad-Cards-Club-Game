@@ -25,32 +25,32 @@ function App({socket}) {
     }
   }, [account, socket])
   return (
-    <div className="row main-body" >
+    <div className="main-body" >
       <Routes>
         <Route 
           path="playgame/:id" 
           element={
-            <>
-              <div className="col-2">
+            <div style={{ width: '100%', display: 'flex', paddingRight: '5px' }}>
+              <div style={{ padding: 0, display: 'inline-block' }}>
                 <Sidebar socket={socket} user={userInfo} />
               </div>
-              <div className="col-10">
+              <div style={{ padding: 0, display: 'inline-block', width: '100%' }}>
                 <Games socket={socket} user={userInfo}/>
               </div>
-            </>
+            </div>
           }
         />
         <Route 
           path="home" 
           element={
-            <>
-              <div className="col-2">
+            <div style={{ width: '100%', display: 'flex', paddingRight: '5px' }}>
+              <div style={{ padding: 0, display: 'inline-block' }}>
                 <Sidebar socket={socket} user={userInfo} />
               </div>
-              <div className="col-10">
+              <div style={{ padding: 0, display: 'inline-block', width: '100%' }}>
                 <Home socket={socket} user={userInfo}/>
               </div>
-            </>
+            </div>
           } 
         />
       </Routes>

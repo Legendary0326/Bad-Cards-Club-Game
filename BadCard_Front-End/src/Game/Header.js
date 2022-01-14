@@ -24,7 +24,7 @@ const Header = ({ socket, room, user }) => {
 
     const leave = () => {
         socket.emit("leave", {room: room, user: user})
-        if(user.wallet == room.judge.wallet && room.state == 1 && room.users.length > 1) {
+        if(user.wallet == room.judge.wallet && room.state != 0 && room.users.length > 1) {
             socket.emit("next", { vote: [], room: room })
         }
         navigate('/home');
@@ -42,18 +42,40 @@ const Header = ({ socket, room, user }) => {
                     <div className="player-x">
                     { room.users
                         ?  room.users.map(e => 
-                                <div 
-                                    className="player1" 
-                                    key={index ++} 
-                                >
-                                    <button
-                                        style={{ 
-                                            backgroundColor: (room.pick_turn ? (room.pick_turn.wallet == e.wallet ? 'white': '#999'): '#999')
-                                        }}
-                                    >{e.username}
-                                    <p style={{ marginBottom: 0 }}>{e.vote ? e.vote : 0} Points</p>
-                                    </button>
-                                </div>
+                            
+                                e.wallet == room.judge.wallet
+                                ? 
+                                    <div 
+                                        className="player1" 
+                                        key={index ++} 
+                                    >
+                                        <button
+                                            style={{ 
+                                                padding: '5px',
+                                                backgroundColor: '#1a1a1a', 
+                                                color: 'white'
+                                            }}
+                                        >
+                                            <p style={{ marginBottom: 0, lineHeight: '1rem' }}>{e.username}</p>
+                                            <p style={{ marginBottom: 0, lineHeight: '1rem', fontSize: '.75rem' }}>Bad Buddy</p>
+                                        </button>
+                                    </div>
+                                :   <div 
+                                        className="player1" 
+                                        key={index ++} 
+                                    >
+                                        <button
+                                            style={{ 
+                                                padding: '5px',
+                                                backgroundColor: 'white',
+                                                color: 'black'
+                                            }}
+                                        >
+                                            <p style={{ marginBottom: 0, lineHeight: '1rem' }}>{e.username}</p>
+                                            <p style={{ marginBottom: 0, lineHeight: '1rem', fontSize: '.75rem' }}>{e.vote ? e.vote : 0} Points</p>
+                                        </button>
+                                    </div>
+                                
                             )
                         :  ""
                     }
@@ -78,7 +100,7 @@ const Header = ({ socket, room, user }) => {
                             </Button>
                         </OverlayTrigger>
                         { room && user && room.state == 0 && user.wallet == room.creator.wallet || 
-                        room && user && room.state == 3 && user.wallet == room.creator.wallet
+                        room && user && room.state == 4 && user.wallet == room.creator.wallet
                             ? 
                             <OverlayTrigger
                                 placement="left"

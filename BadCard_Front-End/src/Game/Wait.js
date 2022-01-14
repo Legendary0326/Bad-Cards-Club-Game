@@ -18,7 +18,12 @@ const Wait = ({ socket, room, user }) => {
     }
 
     return (
-        <div style={{ textAlign: 'center', paddingTop: '5rem' }}>
+        <div 
+            style={{ 
+                textAlign: 'center', 
+                paddingTop: '5rem',
+            }}
+        >
             <div className="second">
                 <h1>
                     Waiting For Other Players To Join

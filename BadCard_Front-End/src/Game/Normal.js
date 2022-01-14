@@ -42,7 +42,7 @@ const Normal = ({ socket, room, user }) => {
                 </div>
             </>
         
-        if(!card && room.pick_turn.wallet == user.wallet) {
+        if(!card) {
             e.currentTarget.style.display = 'none'
             setCard(selCard)
             socket.emit("pick", {
@@ -72,7 +72,35 @@ const Normal = ({ socket, room, user }) => {
             {
                 room.state == 1 
                 ? (
-                    room.pick.length == (room.users.length - 1)
+                    <>
+                        {card}
+                        <div className="third" id="origin-third">
+                            <div className="cards" style={{display: 'block', marginLeft: 0}}>
+                                <h1>Your Cards :</h1>
+                            </div>
+                            <div className="third-data">
+                            {
+                                content.content
+                                ?   content.content.map(e => 
+                                        <div 
+                                            className="third-data1 quiz-card" 
+                                            onDoubleClick={onPick} 
+                                            key={index ++ } 
+                                            style={{ 
+                                                cursor: 'pointer',
+                                                backgroundColor: 'white'
+                                            }}
+                                        >
+                                            <p>{e}</p>
+                                        </div>
+                                    )
+                                :   ("")
+                            }
+                            </div>
+                        </div>
+                    </>
+                ) : (
+                    room.state == 2 
                     ? (
                         <>
                             <div className="second">
@@ -97,84 +125,57 @@ const Normal = ({ socket, room, user }) => {
                             }
                             </div>
                         </>
-                    )
-                    : (
-                        <>
-                            {card}
-                            <div className="third" id="origin-third">
-                                <div className="cards" style={{display: 'block', marginLeft: 0}}>
-                                    <h1>Your Cards :</h1>
-                                </div>
-                                <div className="third-data">
-                                {
-                                    content.content
-                                    ?   content.content.map(e => 
-                                            <div 
-                                                className="third-data1 quiz-card" 
-                                                onDoubleClick={onPick} 
-                                                key={index ++ } 
-                                                style={{ 
-                                                    cursor: 'pointer',
-                                                    backgroundColor: room.pick_turn ? (room.pick_turn.wallet == user.wallet ? 'white' : '#999') : '#999'
-                                             }}
-                                            >
-                                                <p>{e}</p>
-                                            </div>
-                                        )
-                                    :   ("")
-                                }
-                                </div>
-                            </div>
-                        </>
-                    )
-                )
-                : (
-                    room.state == 2 
-                    ? (
-                        voteInfo.length
+                    ) : (
+                        room.state == 3
                         ? (
-                            <>
-                                <div className="second">
-                                    <h1 style={{ paddingLeft: '1.25rem' }}>
-                                    {
-                                        (voteInfo.map(e => 
-                                            (room.users.find(ele => ele.wallet == e).username + ' ')
-                                        )).toString()
-                                    } Wins!</h1>
-                                    <div className="third-data">
-                                    {
-                                        voteInfo.map(e => {
-                                            let j = 0;
-                                            return (
-                                                <>
-                                                    <div 
-                                                        className="third-data1"
-                                                        key={j ++}
-                                                    >
-                                                        <p>
-                                                            {
-                                                                room.pick.find(ele => ele.user.wallet == e).text
-                                                            }
-                                                        </p>
-                                                    </div>
-                                                </>
-                                            )
-                                        })
-                                    }
+                            voteInfo.length
+                            ? (
+                                <>
+                                    <div className="second">
+                                        <h1 style={{ paddingLeft: '1.25rem' }}>
+                                        {
+                                            (voteInfo.map(e => 
+                                                (room.users.find(ele => ele.wallet == e) 
+                                                ?   (room.users.find(ele => ele.wallet == e).username + ' ')
+                                                :   'Nobody '
+                                            )).toString())
+                                        } Wins!</h1>
+                                        <div className="third-data">
+                                        {
+                                            voteInfo.map(e => {
+                                                let j = 0;
+                                                return (
+                                                    <>
+                                                        <div 
+                                                            className="third-data1"
+                                                            key={j ++}
+                                                        >
+                                                            <p>
+                                                                {
+                                                                    room.pick.find(ele => ele.user.wallet == e) 
+                                                                    ?   room.pick.find(ele => ele.user.wallet == e).text
+                                                                    :   ''                                                                
+                                                                }
+                                                            </p>
+                                                        </div>
+                                                    </>
+                                                )
+                                            })
+                                        }
+                                        </div>
                                     </div>
+                                </>
+                            )
+                            : (
+                                <div className="second">
+                                    <h1 style={{paddingLeft: '1.25rem'}}>No Winner!</h1>
                                 </div>
-                            </>
+                            )
+                        ) : (
+                            <></>
                         )
-                        : (
-                            <div className="second">
-                                <h1 style={{paddingLeft: '1.25rem'}}>No Winner!</h1>
-                            </div>
-                        )
+
                     )
-                    : (
-                        <></>
-                    )
-                    
                 )
             }
             

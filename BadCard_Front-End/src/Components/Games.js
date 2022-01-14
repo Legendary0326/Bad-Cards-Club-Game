@@ -12,7 +12,7 @@ const Games = ({socket, user}) => {
             </div> */}
             <div className="main">
                 <PlayGame socket={socket} user={user} />
-                <Chatbox socket={socket} user={user} />
+                <Chatbox socket={socket} user={user} chatAll={false} />
             </div>
         </div>
     )

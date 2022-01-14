@@ -3,17 +3,18 @@ import "./Chatbox.css";
 import Person from "../assets/person.jpg";
 import Logo from "../assets/logo.png";
 
-const Chatbox = ({socket}) => {
+const Chatbox = ({socket, chatAll, user}) => {
     const [chats, setChats] = useState([]);
     const [content, setContent] = useState("");
 
     const contentRef = useRef(null)
+    let chatContents = []
 
     useEffect( () => {
         let index = 0
-        socket.emit("chats");
-        socket.on("chats", (data) => {
-            const contents = data.map((element) => 
+        socket.on("chat", (data) => {
+            chatContents.push(data)
+            const contents = chatContents.map((element) => 
                 <div className="chatbox-details" key={ index ++ }>
                     <div className="person-image">
                         <img src={Logo} alt="person-image" />
@@ -32,9 +33,10 @@ const Chatbox = ({socket}) => {
         if(content === "") {
             contentRef.current.style.border = '1px solid red';
         } else {
-            socket.emit("addChats", {
-                username : 'user1',
-                content: content
+            socket.emit("chat", {
+                user : user,
+                content: content,
+                chatAll: chatAll
             })
         }
 

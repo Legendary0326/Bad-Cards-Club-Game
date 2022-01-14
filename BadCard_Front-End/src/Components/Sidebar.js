@@ -9,12 +9,13 @@ import { Button, Form, InputGroup, FormControl } from 'react-bootstrap';
 
 const customStyles = {
     content: {
-      top: "50%",
-      left: "50%",
-      right: "auto",
-      bottom: "auto",
-      marginRight: "-50%",
-      transform: "translate(-50%, -50%)",
+        width: "500px",
+        top: "50%",
+        left: "50%",
+        right: "auto",
+        bottom: "auto",
+        marginRight: "-50%",
+        transform: "translate(-50%, -50%)",
     },
   };
 
@@ -30,21 +31,11 @@ const Sidebar = ({socket, user}) => {
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
 
-    // useEffect( () => {
-    //     if(account) {
-    //         socket.emit("userInfo", {wallet: account})
-    //         socket.on("userInfo", data => {
-    //             if(data) {
-    //                 setUser(data)
-    //                 setUsername(data.username);
-    //             }
-    //         })
-    //     }
-    // }, [socket, account])
-
     useEffect(() => {
         if(user) {
             setUsername(user.username);
+        } else {
+            handleDisconnect()
         }
     }, [user])
 
@@ -117,6 +108,19 @@ const Sidebar = ({socket, user}) => {
         })
     }
 
+    const leave = () => {
+        if(user.room) {
+            socket.emit("room", {id : user.room})
+            socket.on("room", (room) => {
+                socket.emit("leave", {room: room, user: user})
+                if(user.wallet == room.judge.wallet && room.state != 0 && room.users.length > 1) {
+                    socket.emit("next", { vote: [], room: room })
+                }
+            });
+        }
+        navigate('/home');
+    }
+
     return (
         <div className="sidebar-menu">
             <div className="sidebar-logo-area">
@@ -129,27 +133,27 @@ const Sidebar = ({socket, user}) => {
             </div>
             <div className="sidebar-menu-items">
                 <div className="sidebar-menu-item">
-                    <Link to="/home" style={{display : "flex", gap : "10px"}}>
+                    <a onClick={handleDisconnect} style={{display : "flex", gap : "10px"}}>
                         <span><i className="fa fa-home"></i></span>
-                        <span>Home</span>
-                    </Link>
+                        <span className="sidebar-menu-item-label">Home</span>
+                    </a>
                 </div>
                 <div className="sidebar-menu-item">
-                    <Link to={"/playgame/" + (user ? (user.room ? user.room : "0") : "0")} style={{display : "flex", gap : "10px"}}>
+                    <a onClick={leave} style={{display : "flex", gap : "10px"}}>
                         <span><i className="fa fa-user"></i></span>
-                        <span>Games</span>
-                    </Link>
+                        <span className="sidebar-menu-item-label">Games</span>
+                    </a>
                 </div>
                 <div className="sidebar-menu-item">
                     <a href="https://discord.com" target="_blank" style={{display : "flex", gap : "10px"}}>
                         <span><img src={discord_img}></img></span>
-                        <span>Discord</span>
+                        <span className="sidebar-menu-item-label">Discord</span>
                     </a>
                 </div>
                 <div className="sidebar-menu-item">
                     <a href="#" onClick={openModal} style={{display : "flex", gap : "10px"}}>
                         <span><i className="fa fa-gear"></i></span>
-                        <span>Setting</span>
+                        <span className="sidebar-menu-item-label">Setting</span>
                     </a>
                 <Modal
                     isOpen={modalIsOpen}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
@@ -188,9 +192,8 @@ const Sidebar = ({socket, user}) => {
                         onClick={newGame} 
                         disabled={user ? (user.room ? true : false) : false}
                     >
-                        <span>
-                            <i className="fa fa-plus"></i>
-                        </span>&nbsp;Create New Game
+                        <i className="fa fa-plus"></i>
+                        <span className="sidebar-menu-item-label">&nbsp;Create New Game</span>
                     </Button>
                     <Modal
                       isOpen={modalDataOpen}
@@ -250,8 +253,10 @@ const Sidebar = ({socket, user}) => {
                 </div>
             </div>
             <div className="sidebar-menu-disconnect-area">
-                <span><i className="fa fa-power-off"></i></span>
-                <a onClick={handleDisconnect}>Disconnect</a>
+                <a onClick={handleDisconnect}>
+                    <i className="fa fa-power-off"></i>
+                    <span className="sidebar-menu-item-label"> Disconnect</span>
+                </a>
             </div>
         </div>
     )

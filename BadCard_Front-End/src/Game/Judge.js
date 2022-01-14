@@ -64,8 +64,32 @@ const Judge = ({ socket, room, user }) => {
             {
                 room.state == 1 
                 ? (
-                    room.pick.length ==  (room.users.length - 1)
-                    ?   (
+                    <div 
+                        style={{
+                            textAlign: 'center',
+                            position: 'relative',
+                            marginTop: 'auto',
+                            marginBottom: 'auto',
+                            color: 'white',
+                            backgroundImage: 'url("' + require("../assets/buddy.svg").default + '")',
+                            backgroundRepeat: 'no-repeat',
+                            backgroundPosition: 'center',
+                            backgroundSize: '100% 100%',
+                        }}
+                    >
+                        <div 
+                            style={{
+                                display: 'inline-block',
+                                padding: '1rem'
+                            }}
+                        >
+                            <h5>You Are The Bad Buddy</h5>
+                            <h6>(Waiting For Players To Submit Cards)</h6>
+                        </div>
+                    </div>
+                ) : (
+                    room.state == 2
+                    ? (
                         <>
                             <div 
                                 className="second"
@@ -104,8 +128,8 @@ const Judge = ({ socket, room, user }) => {
                                                         display: 'flex',
                                                         fontSize: '1.5rem',
                                                         fontWeight: 500,
-                                                        paddingBottom: 0
-                                                    }}>{e.user.username}
+                                                        paddingBottom: 0,
+                                                    }}> 
                                                     <input 
                                                         type="checkbox" 
                                                         disabled={(room.pick.length == room.users.length - 1) ? false: true}
@@ -115,6 +139,7 @@ const Judge = ({ socket, room, user }) => {
                                                             marginTop: 'auto',
                                                             marginBottom: 'auto',
                                                             marginLeft: 'auto',
+                                                            marginRight: 'auto',
                                                             width: '1.5rem',
                                                             height: '1.5rem'
                                                         }}
@@ -128,75 +153,54 @@ const Judge = ({ socket, room, user }) => {
                             }
                             </div>
                         </>
-                    )
-                    :   (
-                        <div 
-                            style={{
-                                textAlign: 'center',
-                                position: 'relative',
-                                marginTop: 'auto',
-                                marginBottom: 'auto',
-                                color: 'white',
-                            }}
-                        >
-                            <div 
-                                style={{
-                                    display: 'inline-block',
-                                    padding: '1rem'
-                                }}
-                            >
-                                <h5>You Are The Bad Buddy</h5>
-                                <h6>(Waiting For Players To Submit Cards)</h6>
-                            </div>
-                        </div>
-                    )
-                ) 
-                : (
-                    room.state == 2
-                    ? (
-                        voteInfo.length 
+                    ) : (
+                        room.state == 3 
                         ? (
-                            <>
-                                <div className="second">
-                                    <h1 style={{ paddingLeft: '1.25rem' }}>
-                                    {
-                                        (voteInfo.map(e => 
-                                            (room.users.find(ele => ele.wallet == e).username + ' ')
-                                        )).toString()
-                                    } Wins!
-                                    </h1>
-                                    <div className="third-data">
-                                    {
-                                        voteInfo.map(e => {
-                                            let j = 0;
-                                            return (
-                                                <>
-                                                    <div 
-                                                        className="third-data1"
-                                                        key={j ++}
-                                                    >
-                                                        <p>
-                                                            {
-                                                                room.pick.find(ele => ele.user.wallet == e).text
-                                                            }
-                                                        </p>
-                                                    </div>
-                                                </>
-                                            )
-                                        })
-                                    }
+                            voteInfo.length 
+                            ? (
+                                <>
+                                    <div className="second">
+                                        <h1 style={{ paddingLeft: '1.25rem' }}>
+                                        {
+                                            (voteInfo.map(e => 
+                                                (room.users.find(ele => ele.wallet == e) 
+                                                ?   (room.users.find(ele => ele.wallet == e).username + ' ')
+                                                :   'Nobody '
+                                            )).toString())
+                                        } Wins!
+                                        </h1>
+                                        <div className="third-data">
+                                        {
+                                            voteInfo.map(e => {
+                                                let j = 0;
+                                                return (
+                                                    <>
+                                                        <div 
+                                                            className="third-data1"
+                                                            key={j ++}
+                                                        >
+                                                            <p>
+                                                                {
+                                                                    room.pick.find(ele => ele.user.wallet == e).text
+                                                                }
+                                                            </p>
+                                                        </div>
+                                                    </>
+                                                )
+                                            })
+                                        }
+                                        </div>
                                     </div>
+                                </>
+                            )
+                            : (
+                                <div className="second">
+                                    <h1 style={{ paddingLeft: '1.25rem' }}>No Winner!</h1>
                                 </div>
-                            </>
+                            )
+                        ) : (
+                            <></>
                         )
-                        : (
-                            <div className="second">
-                                <h1 style={{ paddingLeft: '1.25rem' }}>No Winner!</h1>
-                            </div>
-                        )
-                    )
-                    : (
-                        <></>
                     )
                 )
             }

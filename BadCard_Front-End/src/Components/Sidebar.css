@@ -101,8 +101,15 @@ a:hover{
 }
 
 .modal-data{
-    width : 400px;
     height : 330px;
+    display : flex;
+    flex-direction : column;
+    justify-content : center;
+    align-items : center;
+    border-radius : 5px;
+}
+
+.modal-data-leave{
     display : flex;
     flex-direction : column;
     justify-content : center;
@@ -124,8 +131,12 @@ a:hover{
 
 .modal-data form>div{
     display : flex;
-    gap : 15px;
-    margin : 5px;
+    /* gap : 15px; */
+    /* margin : 5px; */
+}
+
+.modal-data form>div>div>div{
+    margin-bottom : 1rem;
 }
 
 .modal-data form label{
@@ -160,7 +171,6 @@ a:hover{
 }
 
 .modal-game-data{
-    width : 400px;
     display : flex;
     flex-direction : column;
     border-radius : 5px;

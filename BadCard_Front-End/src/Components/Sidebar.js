@@ -165,23 +165,23 @@ const Sidebar = ({socket, user}) => {
                     <button className="modal-close" onClick={closeModal}>X</button>
                     <div className="modal-data">
                         <div className="modal-text">
-                            <span>Settings:</span>
+                            <span>SETTING</span>
                         </div>
                         <form onSubmit={handleSettings}>
-                            <div>
-                            <label>Username</label>
-                            <input type="text" onChange={changeUsername} defaultValue={username} />
-                            </div>
-                            <div>
-                            <label>Other Settings</label>
-                            <input type="text" />
-                            </div>
-                            <div>
-                            <label>Other Settings</label>
-                            <input type="text" />
+                            <div className='row'>
+                                <div className='col-sm-5 col-5'>
+                                    <div>Username</div>
+                                    <div>Discord</div>
+                                    <div>Twitter</div>
+                                </div>
+                                <div className='col-sm-7 col-7'>
+                                    <div><input type="text" onChange={changeUsername} defaultValue={username} /></div>
+                                    <div><input type="text" /></div>
+                                    <div><input type="text" /></div>
+                                </div>
                             </div>
                             <div className="modal-data-btn">
-                            <button type="submit" className="submit-btn">enter</button>
+                                <button type="submit" className="submit-btn">Enter</button>
                             </div>
                         </form>
                     </div>
@@ -210,7 +210,7 @@ const Sidebar = ({socket, user}) => {
                             <Form onSubmit={handleCreateRoom}>
                                 <Form.Group className="mb-3" controlId="formBasicEmail">
                                     <Form.Label>Game Name</Form.Label>
-                                    <Form.Control type="text" placeholder="Text Goes Here" value={roomname} onChange={changeRoomname} required={true} />
+                                    <Form.Control type="text" placeholder="" value={roomname} onChange={changeRoomname} required={true} />
                                 </Form.Group>
                                 <Form.Group className="mb-3">
                                     <Form.Label>Password</Form.Label>
@@ -244,7 +244,7 @@ const Sidebar = ({socket, user}) => {
                                 </Form.Group>
                                 <Form.Group className="mb-3" style={{ textAlign: 'center' }}>
                                     <Button variant="dark" type="submit">
-                                        enter
+                                        Enter
                                     </Button>
                                 </Form.Group>
                             </Form>

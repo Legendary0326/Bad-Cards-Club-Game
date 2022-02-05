@@ -35,6 +35,12 @@
     margin-top : 10px;
 }
 
+.chat-avatar{
+    background-color: #4c8be9;
+    border-radius: 2rem;
+    padding: 0.2rem 0.5rem;
+}
+
 .chatbox-details .person-image {
     height: 100%;
 }

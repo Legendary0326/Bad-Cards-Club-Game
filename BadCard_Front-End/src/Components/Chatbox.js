@@ -14,10 +14,12 @@ const Chatbox = ({socket, chatAll, user}) => {
         let index = 0
         socket.on("chat", (data) => {
             chatContents.push(data)
+            console.log('chatContents', chatContents)
             const contents = chatContents.map((element) => 
                 <div className="chatbox-details" key={ index ++ }>
                     <div className="person-image">
-                        <img src={Logo} alt="person-image" />
+                        {/* <img src={Logo} alt="person-image" /> */}
+                        <div className='chat-avatar'>{element.user.username}</div>
                     </div>
                     <div className="chatbox-text">
                         <span>{element.content}</span>
@@ -50,6 +52,12 @@ const Chatbox = ({socket, chatAll, user}) => {
         setContent(e.target.value);
     }
 
+    const divRref = useRef(null);
+
+    useEffect(() => {
+        divRref.current.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
+    });
+
     return (
         <div className="chatbox">
             <div className="chatbox-title">
@@ -73,10 +81,17 @@ const Chatbox = ({socket, chatAll, user}) => {
                         <span>Tysm!</span>
                     </div>
                 </div> */}
+                <div ref={divRref} />
             </div>
             <div className="chatbox-send">
                 <div className="content">
-                    <input type="text" ref={contentRef} value={content} onChange={changeContent} />
+                    <input type="text" ref={contentRef} value={content} onChange={changeContent} 
+                        onKeyPress={(event) => {
+                            if (event.key === "Enter") {
+                                onSend();
+                            }
+                        }}
+                    />
                 </div>
                 <div className="send">
                     <button type="button" className="submit-btn" onClick={onSend}>Send</button>

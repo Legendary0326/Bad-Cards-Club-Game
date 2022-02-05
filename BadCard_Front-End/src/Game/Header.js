@@ -1,8 +1,23 @@
+import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { Button, Tooltip, OverlayTrigger } from 'react-bootstrap';
+import Modal from "react-modal";
+
+const customStyles = {
+    content: {
+        width: "500px",
+        top: "40%",
+        left: "50%",
+        right: "auto",
+        bottom: "auto",
+        marginRight: "-50%",
+        transform: "translate(-50%, -50%)",
+    },
+};
 
 const Header = ({ socket, room, user }) => {
-    
+    const [modalIsOpenLeave, setIsOpenLeave] = useState(false);
+    const [modalIsOpenQuit, setIsOpenQuit] = useState(false);
     let index = 0
     const navigate = useNavigate()
     const leaveTooltip = (props) => (
@@ -32,6 +47,22 @@ const Header = ({ socket, room, user }) => {
 
     const quit = () => {
         socket.emit("quit", room);
+    }
+
+    function openModalLeave() {
+        setIsOpenLeave(true);
+    }
+
+    function closeModalLeave() {
+        setIsOpenLeave(false);
+    }
+
+    function openModalQuit() {
+        setIsOpenQuit(true);
+    }
+
+    function closeModalQuit() {
+        setIsOpenQuit(false);
     }
     
     return (
@@ -95,7 +126,7 @@ const Header = ({ socket, room, user }) => {
                             delay={{ show: 250, hide: 400 }}
                             overlay={leaveTooltip}
                         >
-                            <Button variant="secondary" size="sm" onClick={leave}>
+                            <Button variant="secondary" size="sm" onClick={openModalLeave}>
                                 <i className="fas fa-external-link-alt"></i>
                             </Button>
                         </OverlayTrigger>
@@ -107,7 +138,7 @@ const Header = ({ socket, room, user }) => {
                                 delay={{ show: 250, hide: 400 }}
                                 overlay={cancelTooltip}
                             >
-                                <Button variant="secondary" size="sm" onClick={quit}>
+                                <Button variant="secondary" size="sm" onClick={openModalQuit}>
                                     <i className="fas fa-times"></i>
                                 </Button>
                             </OverlayTrigger>
@@ -117,6 +148,49 @@ const Header = ({ socket, room, user }) => {
                     </div>
                 </div>
             </div>
+            <Modal
+                isOpen={modalIsOpenLeave}
+                onRequestClose={closeModalLeave}
+                style={customStyles}
+                ariaHideApp={false}
+                contentLabel="Example Modal"
+            >
+                <div className="modal-data-leave">
+                    <div className="modal-text">
+                        <span>Do you leave the room really?</span>
+                    </div>
+                    <div className='row'>
+                        <div className="modal-data-btn col-6">
+                            <button className="submit-btn" onClick={closeModalLeave}>NO</button>
+                        </div>
+                        <div className="modal-data-btn col-6">
+                            <button className="submit-btn" onClick={leave}>YES</button>
+                        </div>
+                    </div>
+                </div>
+            </Modal>
+
+            <Modal
+                isOpen={modalIsOpenQuit}
+                onRequestClose={closeModalQuit}
+                style={customStyles}
+                ariaHideApp={false}
+                contentLabel="Example Modal"
+            >
+                <div className="modal-data-leave">
+                    <div className="modal-text">
+                        <span>Do you quit the room really?</span>
+                    </div>
+                    <div className='row'>
+                        <div className="modal-data-btn col-6">
+                            <button className="submit-btn" onClick={closeModalQuit}>NO</button>
+                        </div>
+                        <div className="modal-data-btn col-6">
+                            <button className="submit-btn" onClick={quit}>YES</button>
+                        </div>
+                    </div>
+                </div>
+            </Modal>
         </>
     );
 }

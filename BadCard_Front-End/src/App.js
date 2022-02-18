@@ -1,6 +1,7 @@
 import './App.css';
 import Home from "./Components/Home";
 import Games from "./Components/Games";
+import Leaderboard from "./Components/Leaderboard";
 import { 
   BrowserRouter, 
   Routes, 
@@ -49,6 +50,19 @@ function App({socket}) {
               </div>
               <div style={{ padding: 0, display: 'inline-block', width: '100%' }}>
                 <Home socket={socket} user={userInfo}/>
+              </div>
+            </div>
+          } 
+        />
+        <Route 
+          path="leader-board" 
+          element={
+            <div style={{ width: '100%', display: 'flex', paddingRight: '5px' }}>
+              <div style={{ padding: 0, display: 'inline-block' }}>
+                <Sidebar socket={socket} user={userInfo} />
+              </div>
+              <div style={{ padding: 0, display: 'inline-block', width: '100%' }}>
+                <Leaderboard socket={socket} user={userInfo}/>
               </div>
             </div>
           } 

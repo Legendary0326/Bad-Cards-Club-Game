@@ -1,7 +1,7 @@
-.playgame-data{
+.home{
     display : flex;
     margin : 1px;
-    height : 100%;
+    /* height : 100%; */
 }
 
 .sidebar{
@@ -14,7 +14,7 @@
 .main{
     position: relative;
     flex : 4;
-    background-image: linear-gradient(180deg, black, #111213);
-    height : 100vh;
+    background-color : #000000;
+    height : auto;
     /* color : #ffffff; */
 }

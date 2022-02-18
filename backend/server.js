@@ -91,7 +91,8 @@ const addUser = async (username, wallet, socket) => {
             false,
             "",
             false,
-            socket.id
+            socket.id,
+            0
         )
         const db    = await MongoClient.connect(db_url);
         const dbo   = db.db("card");
@@ -265,6 +266,18 @@ io.sockets.on("connection", function (socket) {
         socket.emit("userInfo", user)
     })
 
+    socket.on("userScoreInfo", () => {
+        MongoClient.connect(db_url, function(err, db) {
+            if (err) throw err;
+            var dbo = db.db("card");
+            dbo.collection("users").find({}).toArray(function(err, result) {
+              if (err) throw err;
+              socket.emit("userScoreInfo", result);
+              db.close();
+            });
+        });
+    })
+
     socket.on("join", (data) => {
 
         const room = rooms.find(e => e.id == data.roomID)
@@ -336,13 +349,27 @@ io.sockets.on("connection", function (socket) {
         io.to(roomID).emit("content", content);
     })
 
-    const next = (data) => {
+    const next = async (data) => {
         const content = getOneCardContent()
         let room = rooms.find(e => e.id == data.room.id)
 
-        data.vote.forEach(e => {
+        const db = await MongoClient.connect(db_url);
+        const dbo = db.db("card");
+
+        data.vote.forEach(async e => {
             let user = room.users.find(o => o.wallet ==  e)
+
             if(user) {
+                const query = { wallet: e }
+                const result = await dbo.collection("users").findOne(query, result());
+
+                if(!result.score)
+                    updateData.score = 0;
+
+                updateData.score = result.score + 50;
+                const newValue = { $set: updateData }
+                await dbo.collection("users").updateOne( query, newValue);
+
                 if(user.vote) {
                     user.vote = parseInt(user.vote) + 1;
                 } else {

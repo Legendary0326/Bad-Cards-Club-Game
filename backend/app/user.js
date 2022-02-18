@@ -1,4 +1,4 @@
-function User (wallet = "", username = "", isPart = false, isJudge = false, room = "", isApprove = false, socket = "") {
+function User (wallet = "", username = "", isPart = false, isJudge = false, room = "", isApprove = false, socket = "", score = 0) {
     this.wallet = wallet;
     this.username = username;
     this.isPart = isPart;
@@ -6,6 +6,7 @@ function User (wallet = "", username = "", isPart = false, isJudge = false, room
     this.room = room;
     this.isApprove = isApprove;
     this.socket = socket;
+    this.score = score;
 }
 
 User.prototype.setUsername = function (username) {

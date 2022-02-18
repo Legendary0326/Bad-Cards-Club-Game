@@ -6,6 +6,7 @@ import Wait from '../Game/Wait';
 import End from '../Game/End';
 import Normal from '../Game/Normal';
 import "./PlayGame.css";
+import Buddy from "../assets/buddy.svg";
 
 const PlayGame = ({socket, user}) => {
 
@@ -32,16 +33,16 @@ const PlayGame = ({socket, user}) => {
 
     return (
         roomInfo 
-        ?   <div 
-                className="playgame" 
-                style={{
-                    backgroundImage: roomInfo.state == 0 ? 'url("' + require("../assets/buddy.svg").default + '")' : '',
-                    backgroundRepeat: 'no-repeat',
-                    backgroundPosition: 'center',
-                }}
-            >
-                <Header socket={socket} room={roomInfo} user={user} />
-                {
+        ?   <div className="playgame">
+                <div className='buddy-container'>
+                    <div className='buddy'
+                    style={{
+                        backgroundImage: roomInfo.state == 0 ? 'url("' + require("../assets/buddy.svg").default + '")' : '',
+                        backgroundRepeat: 'no-repeat',
+                        backgroundPosition: 'center',
+                    }}
+                    ></div>
+                                    {
                     roomInfo.state == 0 // waiting...
                     ? (<Wait socket={socket} room={roomInfo} user={user} />)
                     : (
@@ -58,6 +59,9 @@ const PlayGame = ({socket, user}) => {
                         )
                     )
                 }
+                </div>
+                <Header socket={socket} room={roomInfo} user={user} />
+
             </div>
         :   <div className="playgame">
                 <Header socket={socket} room={roomInfo} user={user} />

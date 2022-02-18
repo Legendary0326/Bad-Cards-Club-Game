@@ -1,6 +1,6 @@
 import React, {useRef, useEffect, useState} from 'react';
 import "./SignIn.css";
-import Logo from "../assets/logo.png";
+import Logo from "../assets/First_log.png";
 import { useEthers } from "@usedapp/core";
 import { useNavigate } from 'react-router-dom';
 
@@ -33,7 +33,7 @@ const SignIn = ({socket}) => {
                     <img src={Logo} alt="logo" />
                 </div>
                 <div className="SignIn-logo-btn">
-                    <button onClick={ handleConnectWallet }><h3>Connect Wallet</h3></button>
+                    <button onClick={ handleConnectWallet }><span>Connect Wallet</span></button>
                 </div>
             </div>
         </div>

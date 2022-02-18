@@ -1,4 +1,5 @@
 .SignIn {
+    background-color: #191919;
     width: 100vw;
     height: 100vh;
     display: flex;
@@ -12,19 +13,27 @@
     flex-direction: column;
 }
 
+.main-body {
+    height: 0vh;
+}
+
 .SignIn-logo {
     display: flex;
     justify-content: center;
-    margin-bottom: 20%;
+    margin-bottom: 1.5rem;
+}
+
+.SignIn-logo > img {
+    width: 7rem;
 }
 
 .SignIn-logo-btn button{
     margin: 0 auto;
     border : none;
-    background-color : #191919;
-    color : #ffffff;
-    padding : 10px 15px 10px 15px;
-    line-height: 15px;
+    background-color : #FFFFFF;
+    color : #1A1A1A;
+    padding: 0.8rem 1.5rem;
+    line-height: 1rem;
     display: flex;
     align-items: center;
     text-align: center;
@@ -32,6 +41,10 @@
     border-radius : 20px;
 }
 
+span {
+    font-size: 0.9rem;
+}
+
 .SignIn-logo-btn button:hover{
-    background-color : #000000;
+    background-color : #c0c0c0;
 }

@@ -1,7 +1,7 @@
 .main-data{
     padding : 10px;
     padding-bottom: 10rem;
-    height: calc(100vh - 3rem);
+    height: calc(100vh - 0.2rem);
     overflow-y : scroll;
     gap : 5px;
     display : flex;
@@ -9,16 +9,42 @@
     background-image: linear-gradient(180deg, black, #111213);
 }
 
-/* .scrollbar{
-    margin-left: 30px;
-	float: left;
-	height: 600px;
-	background: #F5F5F5;
-	overflow-y: scroll;
-	margin-bottom: 25px;
-} */
+.scroll-container{
+	max-height: 23rem;
+	overflow-y: auto;
+}
 
-.main-heading span{
+table {
+    width: 55rem;
+}
+
+.score-tbl th, td{
+    text-align: center;
+    color: rgb(189, 187, 187);
+    padding: 0.5rem;
+    border: rgb(73, 73, 73) solid 1px;
+}
+
+.score-tbl th {
+    color: honeydew;
+}
+
+.score-logo {
+    display: flex;
+    justify-content: center;
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+}
+
+.score-logo img {
+    width: 3rem;
+}
+
+.main-heading-score {
+    text-align: center;
+}
+
+.main-heading-score span{
     font-size : 30px;
     font-weight : bold;
     color: white;

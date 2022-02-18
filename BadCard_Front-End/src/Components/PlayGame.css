@@ -1,12 +1,10 @@
 .playgame{
     padding : 10px;
-    height: calc(100vh - 125px);
+    height: calc(100vh - 165px);
     overflow-y : scroll;
-    /* gap : 5px; */
     display : flex;
     flex-direction :column;
-    /* justify-content : space-between; */
-    background-color : #000000;
+    background-image: linear-gradient(180deg, black, #111213);
 }
 
 .playgame-menu{
@@ -43,10 +41,16 @@
     border-radius: 5px;
     text-transform : capitalize;
 }
-.game-name h2{
+.room-name {
+    font-size: 2rem;
     color: white;
-    margin-left: 20px;
+    margin-left: 1rem;
 }
+
+.player-y > .user-name {
+    text-align: center;
+}
+
 .player-y{
     margin-left: auto;
     FONT-VARIANT: JIS04;
@@ -57,9 +61,7 @@
     text-transform: capitalize;
     width: 150px;
 }
-.player-y h3{
-    color: white;
-}
+
 .player-y p{
     color: white;
 }
@@ -67,14 +69,30 @@
     display : flex;
     flex-direction : column;
     gap : 10px;
-    margin-top : 20px;
+    margin-top : 3rem;
 }
-.second h1{
+
+.buddy-container {
+    width: 100%;
+    height: calc(100vh - 165px);
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.buddy {
+    position: absolute;
+    width: 18rem;
+    height: 17rem;
+    z-index: 1000;
+    background-size: contain;
+    /* transform: translate(50%, 50%);*/
+}
+
+.waiting-letter{
+    font-size: 2rem;
     color: white;
-}
-.second h3{
-    color:white;
-    margin-left: 20px;
 }
 .cards h1{
     color: white;

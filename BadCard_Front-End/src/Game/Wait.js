@@ -3,7 +3,10 @@ import { Button } from 'react-bootstrap';
 
 const Wait = ({ socket, room, user }) => {
 
-    const [disable, setDisable] = useState(false)
+    const [disable, setDisable] = useState(false);
+    const [time, setTime] = useState();
+    const [min, setMin] = useState();
+    let timer = 0;
 
     useEffect(() => {
         if(room && 
@@ -13,6 +16,15 @@ const Wait = ({ socket, room, user }) => {
         }
     }, [socket])
 
+    setInterval(myTimer, 1000);
+    function myTimer() {
+        timer ++;
+        if(timer == 600){
+            socket.emit("quit", room);
+            timer = 0;
+        }
+    }
+
     const onStart = () => {
         socket.emit("start", room.id);
     }
@@ -20,18 +32,17 @@ const Wait = ({ socket, room, user }) => {
     return (
         <div 
             style={{ 
-                textAlign: 'center', 
-                paddingTop: '5rem',
+                textAlign: 'center'
             }}
         >
             <div className="second">
-                <h1>
+                <span className="waiting-letter">
                     Waiting For Other Players To Join
                     <span className="dot first-dot">.</span>
                     <span className="dot second-dot">.</span>
                     <span className="dot third-dot">.</span>
-                </h1>
-                <h3>
+                </span>
+                <span className="user-name">
                     {( room && user && room.creator.wallet == user.wallet ) 
                         ?
                             <Button 
@@ -43,7 +54,7 @@ const Wait = ({ socket, room, user }) => {
                             </Button>
                         : ""
                     }
-                </h3>
+                </span>
             </div>
             <div className="third" id="origin-third">
                 <div className="cards">

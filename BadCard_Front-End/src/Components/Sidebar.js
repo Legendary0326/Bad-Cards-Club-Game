@@ -4,14 +4,14 @@ import Modal from "react-modal";
 import Logo from "../assets/logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import { useEthers } from "@usedapp/core";
-import discord_img from '../assets/discord.png';
+import discord_img from '../assets/discord.svg';
 import { Button, Form, InputGroup, FormControl } from 'react-bootstrap';
 
 const customStyles = {
     content: {
         width: "500px",
-        top: "50%",
-        left: "50%",
+        top: "40%",
+        left: "56%",
         right: "auto",
         bottom: "auto",
         marginRight: "-50%",
@@ -128,7 +128,7 @@ const Sidebar = ({socket, user}) => {
                     <img src={Logo} alt="logo" />
                 </div>
                 <div className="sidebar-logo-btn">
-                    <button>{ String(account).substring(0, 6) + "..." + String(account).substring(38)}</button>
+                    <button>{ String(account).substring(0, 4) + ".." + String(account).substring(39)}</button>
                 </div>
             </div>
             <div className="sidebar-menu-items">
@@ -145,116 +145,123 @@ const Sidebar = ({socket, user}) => {
                     </a>
                 </div>
                 <div className="sidebar-menu-item">
-                    <a href="https://discord.com" target="_blank" style={{display : "flex", gap : "10px"}}>
-                        <span><img src={discord_img}></img></span>
+                    <a href="https://discord.com" target="_blank" style={{display : "flex", gap : "7px"}}>
+                        <span><img className='discord-img' src={discord_img}></img></span>
+                        {/* <span><i className="fa fa-discord"></i></span> */}
                         <span className="sidebar-menu-item-label">Discord</span>
                     </a>
                 </div>
                 <div className="sidebar-menu-item">
                     <a href="#" onClick={openModal} style={{display : "flex", gap : "10px"}}>
                         <span><i className="fa fa-gear"></i></span>
-                        <span className="sidebar-menu-item-label">Setting</span>
+                        <span className="sidebar-menu-item-label">Settings</span>
                     </a>
+                </div>
+                <div className="sidebar-menu-item">
+                    <a href="/leader-board" style={{display : "flex", gap : "10px"}}>
+                        <span><i className="fa fa-table"></i></span>
+                        <span className="sidebar-menu-item-label">Leader Board</span>
+                    </a>
+                </div>
                 <Modal
-                    isOpen={modalIsOpen}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+                    isOpen={modalIsOpen}
                     onRequestClose={closeModal}
                     style={customStyles}
                     ariaHideApp={false}
                     contentLabel="Example Modal"
                 >
-                    <button className="modal-close" onClick={closeModal}>X</button>
                     <div className="modal-data">
                         <div className="modal-text">
-                            <span>SETTING</span>
+                            <span>Settings</span>
                         </div>
                         <form onSubmit={handleSettings}>
                             <div className='row'>
-                                <div className='col-sm-5 col-5'>
-                                    <div>Username</div>
-                                    <div>Discord</div>
-                                    <div>Twitter</div>
+                                <div className='setting-label col-sm-6 col-6'>
+                                    <div>Discord Name:</div>
+                                    {/* <div>Discord</div> */}
+                                    <div>Twitter Handle:</div>
                                 </div>
-                                <div className='col-sm-7 col-7'>
+                                <div className='col-sm-6 col-6'>
                                     <div><input type="text" onChange={changeUsername} defaultValue={username} /></div>
-                                    <div><input type="text" /></div>
+                                    {/* <div><input type="text" /></div> */}
                                     <div><input type="text" /></div>
                                 </div>
                             </div>
                             <div className="modal-data-btn">
+                                <button className="submit-btn submit-btn-cancel" onClick={closeDataModal}>Cancel</button>
                                 <button type="submit" className="submit-btn">Enter</button>
                             </div>
                         </form>
                     </div>
                 </Modal>
-                </div>
-                <div className="sidebar-menu-item">
-                    <Button 
-                        onClick={newGame} 
-                        disabled={user ? (user.room ? true : false) : false}
-                    >
-                        <i className="fa fa-plus"></i>
-                        <span className="sidebar-menu-item-label">&nbsp;Create New Game</span>
-                    </Button>
-                    <Modal
-                      isOpen={modalDataOpen}
-                      onRequestClose={closeDataModal}
-                      style={customStyles}
-                      ariaHideApp={false}
-                      contentLabel="Example Modal"
-                    >
-                        <button className="modal-close" onClick={closeDataModal}>X</button>
-                        <div className="modal-game-data">
-                            <div className="modal-text">
-                                <span>Create New Game:</span>
-                            </div>
-                            <Form onSubmit={handleCreateRoom}>
-                                <Form.Group className="mb-3" controlId="formBasicEmail">
-                                    <Form.Label>Game Name</Form.Label>
-                                    <Form.Control type="text" placeholder="" value={roomname} onChange={changeRoomname} required={true} />
-                                </Form.Group>
-                                <Form.Group className="mb-3">
-                                    <Form.Label>Password</Form.Label>
-                                    <InputGroup className="mb-3">
-                                        <FormControl
-                                        placeholder="Password"
-                                        aria-label="Password"
-                                        aria-describedby="basic-addon2"
-                                        type={ pack == 1 ? "password" : (showPassword ? 'text' : 'password')}
-                                        disabled={pack == 1 ? true: false} required={pack == 2 ? true : false} value={password} onChange={changePassword}
-                                        />
-                                        <InputGroup.Text id="basic-addon2" onClick={pack == 1 ? null :changePasswordShow} style={{cursor: "pointer"}}>
-                                            {
-                                                pack == 1 
-                                                ? <i className="fa fa-eye"></i>
-                                                : (
-                                                    showPassword 
-                                                    ? <i className="fa fa-eye-slash"></i> 
-                                                    : <i className="fa fa-eye"></i>
-                                                )
-                                            }
-                                        </InputGroup.Text>
-                                    </InputGroup>
-                                </Form.Group>
-                                <Form.Group className="mb-3">
-                                    <Form.Label>Packs</Form.Label>
-                                    <div style={{display: 'flex'}}>
-                                        <Form.Check type="radio" label="Starter Pack" name="pack" checked={pack == 1 ? true : false} value={1} onChange={changePack} style={{display: 'inline-block'}} />
-                                        <Form.Check type="radio" label="Expansion X" name="pack" checked={pack == 2 ? true : false} value={2} onChange={changePack} style={{display: 'inline-block', marginLeft: 'auto'}} />
-                                    </div>
-                                </Form.Group>
-                                <Form.Group className="mb-3" style={{ textAlign: 'center' }}>
-                                    <Button variant="dark" type="submit">
-                                        Enter
-                                    </Button>
-                                </Form.Group>
-                            </Form>
-                        </div>
-                    </Modal>
-                </div>
             </div>
-            <div className="sidebar-menu-disconnect-area">
-                <a onClick={handleDisconnect}>
-                    <i className="fa fa-power-off"></i>
+            <div className="sidebar-menu-item">
+                <Button 
+                    onClick={newGame} 
+                    disabled={user ? (user.room ? true : false) : false}
+                >
+                    <i className="fa fa-plus"></i>
+                    <span className="sidebar-menu-item-label">&nbsp;Create New Game</span>
+                </Button>
+                <Modal
+                    isOpen={modalDataOpen}
+                    onRequestClose={closeDataModal}
+                    style={customStyles}
+                    ariaHideApp={false}
+                    contentLabel="Example Modal"
+                >
+                    <div className="modal-game-data">
+                        <div className="modal-text create-modal-title">
+                            <span>Create New Game</span>
+                        </div>
+                        <Form onSubmit={handleCreateRoom}>
+                            <Form.Group className="mb-3" controlId="formBasicEmail">
+                                <Form.Label>Game Name</Form.Label>
+                                <Form.Control type="text" placeholder="" value={roomname} onChange={changeRoomname} required={true} />
+                            </Form.Group>
+                            <Form.Group className="mb-3">
+                                <Form.Label>Password</Form.Label>
+                                <InputGroup className="mb-3">
+                                    <FormControl
+                                    placeholder="Password"
+                                    aria-label="Password"
+                                    aria-describedby="basic-addon2"
+                                    type={ pack == 1 ? "password" : (showPassword ? 'text' : 'password')}
+                                    disabled={pack == 1 ? true: false} required={pack == 2 ? true : false} value={password} onChange={changePassword}
+                                    />
+                                    <InputGroup.Text id="basic-addon2" onClick={pack == 1 ? null :changePasswordShow} style={{cursor: "pointer"}}>
+                                        {
+                                            pack == 1 
+                                            ? <i className="fa fa-eye"></i>
+                                            : (
+                                                showPassword 
+                                                ? <i className="fa fa-eye-slash"></i> 
+                                                : <i className="fa fa-eye"></i>
+                                            )
+                                        }
+                                    </InputGroup.Text>
+                                </InputGroup>
+                            </Form.Group>
+                            <Form.Group className="mb-3">
+                                <Form.Label>Packs</Form.Label>
+                                <div style={{display: 'flex'}}>
+                                    <Form.Check type="radio" label="Starter Pack" name="pack" checked={pack == 1 ? true : false} value={1} onChange={changePack} style={{display: 'inline-block'}} />
+                                    <Form.Check type="radio" label="Expansion X" name="pack" checked={pack == 2 ? true : false} value={2} onChange={changePack} style={{display: 'inline-block', marginLeft: 'auto'}} />
+                                </div>
+                            </Form.Group>
+                            <Form.Group className="mb-3" style={{ textAlign: 'center' }}>
+                                <div className="modal-data-btn">
+                                    <Button className="submit-btn submit-btn-cancel" onClick={closeDataModal}>Cancel</Button>
+                                    <Button variant="dark" type="submit" className='submit-btn'>Enter</Button>
+                                </div>
+                            </Form.Group>
+                        </Form>
+                    </div>
+                </Modal>
+            </div>
+            <div className="sidebar-menu-item sidebar-menu-disconnect-area">
+                <a onClick={handleDisconnect} style={{display : "flex", gap : "10px"}}>
+                    <span><i className="fa fa-power-off"></i></span>
                     <span className="sidebar-menu-item-label"> Disconnect</span>
                 </a>
             </div>

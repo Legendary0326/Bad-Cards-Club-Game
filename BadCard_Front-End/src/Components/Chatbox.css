@@ -1,28 +1,26 @@
 .chatbox{
     position: absolute;
-    right: 0;
+    right: 0.2rem;
     bottom: 0;
-    width: 100%;
-    margin-top : 10px;
+    width: calc(100% - 0.2rem);
     background-color : #ffffff;
-    height : 164px;
-    /* padding : 10px; */
     z-index : 1;
     color : #000000;
-    background-color : #fafbff;
+    border: 0.3rem solid #c3c3c3;
 }
 
 .chatbox-title span{
-    font-size : 15px;
+    font-size : 1rem;
     font-weight : bold;
-    padding : 15px;
+    color: #5a5a5a;
+    padding : 1rem;
 }
 
 .chatbox-data{
     display : flex;
     flex-direction : column;
     gap : 5px;
-    border-top : 1px solid #808080;
+    border-top : 1px solid #dbd9d9;
     padding : 5px;
     height: 5rem;
     overflow-y: auto;
@@ -59,7 +57,7 @@
 }
 
 .chatbox-send {
-    border-top: 1px solid #999;
+    /* border-top: 1px solid #c3c3c3; */
     display: flex;
     gap: .5rem;
     padding-top: .5rem;
@@ -71,6 +69,10 @@
 .chatbox-send .content {
     margin: auto;
     width: 100%;
+}
+
+.chatbox-send .content > input {
+    border: 0.2rem solid #c3c3c3 !important;
 }
 
 .chatbox-send .content input {

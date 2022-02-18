@@ -69,7 +69,7 @@ const Header = ({ socket, room, user }) => {
         <>
             <div className="first">
                 <div className="game-name">
-                    <h2>{room.name}</h2>
+                    <div className='room-name'>{room.name}</div>
                     <div className="player-x">
                     { room.users
                         ?  room.users.map(e => 
@@ -113,7 +113,7 @@ const Header = ({ socket, room, user }) => {
                     </div>
                 </div>
                 <div className="player-y">
-                    <h3>{user ? user.username : ""}</h3>
+                    <div className='user-name'>{user ? user.username : ""}</div>
                     <div 
                         style={{
                             paddingTop: '.5rem',
@@ -157,7 +157,7 @@ const Header = ({ socket, room, user }) => {
             >
                 <div className="modal-data-leave">
                     <div className="modal-text">
-                        <span>Do you leave the room really?</span>
+                        <span>Do you really want to leave the room?</span>
                     </div>
                     <div className='row'>
                         <div className="modal-data-btn col-6">
@@ -179,7 +179,7 @@ const Header = ({ socket, room, user }) => {
             >
                 <div className="modal-data-leave">
                     <div className="modal-text">
-                        <span>Do you quit the room really?</span>
+                        <span>Do you really want to end the game?</span>
                     </div>
                     <div className='row'>
                         <div className="modal-data-btn col-6">

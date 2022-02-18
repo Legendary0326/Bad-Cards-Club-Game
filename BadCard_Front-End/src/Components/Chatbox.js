@@ -61,7 +61,7 @@ const Chatbox = ({socket, chatAll, user}) => {
     return (
         <div className="chatbox">
             <div className="chatbox-title">
-                <span>Lobby Chat</span>
+                <span>GAME CHAT</span>
             </div>
             <div className="chatbox-data">
                 {chats}

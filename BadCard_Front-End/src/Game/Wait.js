@@ -6,6 +6,7 @@ const Wait = ({ socket, room, user }) => {
     const [disable, setDisable] = useState(false);
     const [time, setTime] = useState();
     const [min, setMin] = useState();
+    const [startFlag, setStartFlag] = useState(false);
     let timer = 0;
 
     useEffect(() => {
@@ -19,13 +20,14 @@ const Wait = ({ socket, room, user }) => {
     setInterval(myTimer, 1000);
     function myTimer() {
         timer ++;
-        if(timer == 600){
+        if(startFlag == false && timer == 600){
             socket.emit("quit", room);
             timer = 0;
         }
     }
 
     const onStart = () => {
+        setStartFlag(true);
         socket.emit("start", room.id);
     }
 
@@ -48,7 +50,7 @@ const Wait = ({ socket, room, user }) => {
                             <Button 
                                 onClick={onStart}
                                 size="lg"
-                                disabled={room.users.length > 3 ? false: true}
+                                disabled={room.users.length > 2 ? false: true}
                             >
                                 Start the game
                             </Button>

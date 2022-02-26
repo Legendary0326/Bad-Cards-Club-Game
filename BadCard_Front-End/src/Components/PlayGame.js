@@ -34,33 +34,40 @@ const PlayGame = ({socket, user}) => {
     return (
         roomInfo 
         ?   <div className="playgame">
-                <div className='buddy-container'>
-                    <div className='buddy'
-                    style={{
-                        backgroundImage: roomInfo.state == 0 ? 'url("' + require("../assets/buddy.svg").default + '")' : '',
-                        backgroundRepeat: 'no-repeat',
-                        backgroundPosition: 'center',
-                    }}
-                    ></div>
-                                    {
-                    roomInfo.state == 0 // waiting...
-                    ? (<Wait socket={socket} room={roomInfo} user={user} />)
-                    : (
-                        roomInfo.state == 1 || roomInfo.state == 2 || roomInfo.state == 3// progressing
-                        ? (
-                            user.wallet == roomInfo.judge.wallet  
-                            ? (<Judge socket={socket} room={roomInfo} user={user} />) // if you are a judge
-                            : (<Normal socket={socket} room={roomInfo} user={user} />) // you are normal player
-                        )
-                        : (
-                            roomInfo.state == 4 // end
-                            ? (<End socket={socket} room={roomInfo} user={user} />)
-                            : (<></>)
-                        )
-                    )
-                }
-                </div>
                 <Header socket={socket} room={roomInfo} user={user} />
+                <div className='buddy-container'>
+                    <div className='buddy'>
+                        <div className='budy-size'>
+                            <div
+                                className='budy-img'
+                                    style={{
+                                    backgroundImage: roomInfo.state == 0 ? 'url("' + require("../assets/buddy.svg").default + '")' : '',
+                                    backgroundRepeat: 'no-repeat',
+                                    backgroundPosition: 'center',
+                                }}
+                            >
+                            </div>
+                        </div>
+
+                        {
+                            roomInfo.state == 0 // waiting...
+                            ? (<Wait socket={socket} room={roomInfo} user={user} />)
+                            : (
+                                roomInfo.state == 1 || roomInfo.state == 2 || roomInfo.state == 3// progressing
+                                ? (
+                                    user.wallet == roomInfo.judge.wallet  
+                                    ? (<Judge socket={socket} room={roomInfo} user={user} />) // if you are a judge
+                                    : (<Normal socket={socket} room={roomInfo} user={user} />) // you are normal player
+                                )
+                                : (
+                                    roomInfo.state == 4 // end
+                                    ? (<End socket={socket} room={roomInfo} user={user} />)
+                                    : (<></>)
+                                )
+                            )
+                        }
+                    </div>
+                </div>
 
             </div>
         :   <div className="playgame">

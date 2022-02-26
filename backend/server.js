@@ -179,8 +179,8 @@ const disconnect = (socketInfo) => {
                     user: user,
                     room: room
                 })
-            } else {
-                users.splice(userIndex, 1);
+            }
+            users.splice(userIndex, 1);
         }
     }
 }
@@ -214,7 +214,7 @@ const disconnect = (socketInfo) => {
             // }
         // }
     // }
-}
+// }
 
 io.sockets.on("connection", function (socket) {
 
@@ -360,8 +360,11 @@ io.sockets.on("connection", function (socket) {
             let user = room.users.find(o => o.wallet ==  e)
 
             if(user) {
+                let updateData = {
+                    score: 0
+                };
                 const query = { wallet: e }
-                const result = await dbo.collection("users").findOne(query, result());
+                const result = await dbo.collection("users").findOne(query);
 
                 if(!result.score)
                     updateData.score = 0;
@@ -456,6 +459,8 @@ io.sockets.on("connection", function (socket) {
             }
 
             io.to(data.id).emit("room", null)
+            console.log('data_id', data.id)
+            console.log("mylog", io.of('/').in(data.id));
             io.of('/').in(data.id).clients(function(error, clients) {
                 if (clients.length > 0) {
 

@@ -46,7 +46,7 @@ const Judge = ({ socket, room, user }) => {
     }
     return (
         <>
-            <div className="second" style={{ paddingLeft: '20px', flexDirection: 'row', paddingBottom: '1rem' }}>
+            <div className="second" style={{ color: 'white', paddingLeft: '20px', flexDirection: 'row', paddingBottom: '1rem' }}>
                 <div style={{ maxWidth: 'calc(100% - 175px)'}}>
                     <h1 style={{marginLeft: 0}}>Question</h1>
                     <h3>{content.question}</h3>

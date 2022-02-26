@@ -16,6 +16,10 @@ function App({socket}) {
   const { account } = useEthers();
 
   useEffect(() => {
+    if(performance.navigation.type == performance.navigation.TYPE_RELOAD){
+      window.location.href = '/';
+    }
+
     if(account) {
       socket.emit("userInfo", {wallet: account})
       socket.on("userInfo", data => {

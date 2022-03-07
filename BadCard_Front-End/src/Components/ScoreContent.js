@@ -46,12 +46,9 @@ const ScoreContent = ({ socket, user }) => {
         tmptbl += "</td>";
       tmptbl += "</tr>";
     });
-    if(scoreData){
-      setScoreData(tmptbl);
-    }
-    else{
-      setScoreData('<tr><td colspan="3">there are no data</td></tr>');
-    }
+    
+    setScoreData(tmptbl);
+
   }, [userScoreInfo])
 
   return (

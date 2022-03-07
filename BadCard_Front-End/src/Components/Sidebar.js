@@ -7,6 +7,17 @@ import { useEthers } from "@usedapp/core";
 import discord_img from '../assets/discord.svg';
 import { Button, Form, InputGroup, FormControl } from 'react-bootstrap';
 
+const customStyles_leave = {
+    content: {
+        width: "500px",
+        top: "40%",
+        left: "50%",
+        right: "auto",
+        bottom: "auto",
+        marginRight: "-50%",
+        transform: "translate(-50%, -50%)",
+    },
+};
 const customStyles = {
     content: {
         width: "500px",
@@ -20,7 +31,8 @@ const customStyles = {
   };
 
 const Sidebar = ({socket, user}) => {
-
+    const [modalIsOpenLeave, setIsOpenLeave] = useState(false);
+    const [router, setRouter] = useState('');
     const [modalIsOpen, setIsOpen] = useState(false);
     const [modalDataOpen, setModelDataOpen] = useState(false);
     const { account, deactivate } = useEthers();
@@ -50,6 +62,23 @@ const Sidebar = ({socket, user}) => {
       setIsOpen(false);
     }
 
+    function openModalLeave(_router) {
+        if(user.room){
+            setIsOpenLeave(true);
+            setRouter(_router);
+        }else {
+            if(_router == 'logout')
+                handleDisconnect();
+            else
+                navigate(_router);
+        }
+        
+    }
+
+    function closeModalLeave() {
+        setIsOpenLeave(false);
+    }
+
     function newGame() {
         setModelDataOpen(true);
     }
@@ -61,7 +90,7 @@ const Sidebar = ({socket, user}) => {
     function handleDisconnect() {
         deactivate();
         socket.emit("logout");
-        window.location = "/";
+        navigate('/');
     }
 
     const changeUsername = (e) => {
@@ -109,16 +138,22 @@ const Sidebar = ({socket, user}) => {
     }
 
     const leave = () => {
-        if(user.room) {
-            socket.emit("room", {id : user.room})
-            socket.on("room", (room) => {
-                socket.emit("leave", {room: room, user: user})
-                if(user.wallet == room.judge.wallet && room.state != 0 && room.users.length > 1) {
-                    socket.emit("next", { vote: [], room: room })
-                }
-            });
+        if(router == 'logout'){
+            handleDisconnect();
+        }else {
+            if(user.room) {
+                socket.emit("room", {id : user.room})
+                socket.on("room", (room) => {
+                    socket.emit("leave", {room: room, user: user})
+                    if(user.wallet == room.judge.wallet && room.state != 0 && room.users.length > 1) {
+                        socket.emit("next", { vote: [], room: room })
+                    }
+                });
+            }
+            navigate(router);
+            setIsOpenLeave(false);
         }
-        navigate('/home');
+
     }
 
     return (
@@ -133,13 +168,13 @@ const Sidebar = ({socket, user}) => {
             </div>
             <div className="sidebar-menu-items">
                 <div className="sidebar-menu-item">
-                    <a onClick={handleDisconnect} style={{display : "flex", gap : "10px"}}>
+                    <a onClick={ () => openModalLeave('logout') } style={{display : "flex", gap : "10px"}}>
                         <span><i className="fa fa-home"></i></span>
                         <span className="sidebar-menu-item-label">Home</span>
                     </a>
                 </div>
                 <div className="sidebar-menu-item">
-                    <a onClick={leave} style={{display : "flex", gap : "10px"}}>
+                    <a onClick={ () => openModalLeave('/home') } style={{display : "flex", gap : "10px"}}>
                         <span><i className="fa fa-user"></i></span>
                         <span className="sidebar-menu-item-label">Games</span>
                     </a>
@@ -158,7 +193,7 @@ const Sidebar = ({socket, user}) => {
                     </a>
                 </div>
                 <div className="sidebar-menu-item">
-                    <a href="/leader-board" style={{display : "flex", gap : "10px"}}>
+                    <a onClick={ () => openModalLeave('/leader-board') } style={{display : "flex", gap : "10px"}}>
                         <span><i className="fa fa-table"></i></span>
                         <span className="sidebar-menu-item-label">Leader Board</span>
                     </a>
@@ -174,7 +209,7 @@ const Sidebar = ({socket, user}) => {
                         <div className="modal-text">
                             <span>Settings</span>
                         </div>
-                        <form onSubmit={handleSettings}>
+                        <form onSubmit={ handleSettings }>
                             <div className='row'>
                                 <div className='setting-label col-sm-6 col-6'>
                                     <div>Discord Name:</div>
@@ -182,13 +217,13 @@ const Sidebar = ({socket, user}) => {
                                     <div>Twitter Handle:</div>
                                 </div>
                                 <div className='col-sm-6 col-6'>
-                                    <div><input type="text" onChange={changeUsername} defaultValue={username} /></div>
+                                    <div><input type="text" onChange={ changeUsername } defaultValue={username} /></div>
                                     {/* <div><input type="text" /></div> */}
                                     <div><input type="text" /></div>
                                 </div>
                             </div>
                             <div className="modal-data-btn">
-                                <button className="submit-btn submit-btn-cancel" onClick={closeDataModal}>Cancel</button>
+                                <button className="submit-btn submit-btn-cancel" onClick={ closeDataModal }>Cancel</button>
                                 <button type="submit" className="submit-btn">Enter</button>
                             </div>
                         </form>
@@ -203,6 +238,27 @@ const Sidebar = ({socket, user}) => {
                     <i className="fa fa-plus"></i>
                     <span className="sidebar-menu-item-label">&nbsp;Create New Game</span>
                 </Button>
+                <Modal
+                    isOpen={modalIsOpenLeave}
+                    onRequestClose={closeModalLeave}
+                    style={customStyles_leave}
+                    ariaHideApp={false}
+                    contentLabel="Example Modal"
+                >
+                    <div className="modal-data-leave">
+                        <div className="modal-text">
+                            <span>Do you really want to leave the room?</span>
+                        </div>
+                        <div className='row'>
+                            <div className="modal-data-btn col-6">
+                                <button className="submit-btn" onClick={closeModalLeave}>NO</button>
+                            </div>
+                            <div className="modal-data-btn col-6">
+                                <button className="submit-btn" onClick={leave}>YES</button>
+                            </div>
+                        </div>
+                    </div>
+                </Modal>
                 <Modal
                     isOpen={modalDataOpen}
                     onRequestClose={closeDataModal}
@@ -260,7 +316,7 @@ const Sidebar = ({socket, user}) => {
                 </Modal>
             </div>
             <div className="sidebar-menu-item sidebar-menu-disconnect-area">
-                <a onClick={handleDisconnect} style={{display : "flex", gap : "10px"}}>
+                <a onClick={ () => openModalLeave('logout') } style={{display : "flex", gap : "10px"}}>
                     <span><i className="fa fa-power-off"></i></span>
                     <span className="sidebar-menu-item-label"> Disconnect</span>
                 </a>

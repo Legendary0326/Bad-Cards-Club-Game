@@ -27,13 +27,15 @@ const Judge = ({ socket, room, user }) => {
     }
 
     const vote = (e) => {
+        console.log(e.target.checked)
+        console.log(e.target.value)
         const checked = e.target.checked;
         const value = e.target.value;
 
         if(checked) {
             const isExist = voteInfo.find(e => e == value)
             if(!isExist) {
-                voteInfo.push(value)
+                voteInfo[0] = value
             }
         } else {
             const isExist = voteInfo.find(e => e == value)
@@ -131,7 +133,8 @@ const Judge = ({ socket, room, user }) => {
                                                         paddingBottom: 0,
                                                     }}> 
                                                     <input 
-                                                        type="checkbox" 
+                                                        type="radio" 
+                                                        name="group"
                                                         disabled={(room.pick.length == room.users.length - 1) ? false: true}
                                                         value={e.user.wallet}
                                                         onChange={vote}

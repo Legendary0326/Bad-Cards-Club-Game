@@ -10,8 +10,15 @@ import {
 import Sidebar from "./Components/Sidebar";
 import { useEthers } from "@usedapp/core";
 import { useEffect, useState } from 'react';
+// import io from 'socket.io-client';
 
+// const socket = io.connect(`http://${window.location.hostname}:8000`, 
+//   { 
+//     transports: ['websocket', 'polling', 'flashsocket'] 
+//   });
+  
 function App({socket}) {
+// function App() {
   const [userInfo, setUserInfo] = useState([])
   const { account } = useEthers();
 
@@ -28,6 +35,7 @@ function App({socket}) {
         }
       })
     }
+
   }, [account, socket])
   return (
     <div className="main-body" >
